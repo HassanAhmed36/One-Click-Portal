@@ -1,0 +1,20 @@
+- attendance report
+- update draft issue in order not show in dashboard
+- sales and production  performance 
+- different department login
+- Apply fileting in dashboard order
+ --status
+ --department
+ --draft and final deadline
+
+Employee status on overall ateendance page
+notice board work
+deactivate employee
+performance detail popup
+development 
+
+
+
+1click.com.pk/cpanel
+finance
+NEWP@ss!@rd45
