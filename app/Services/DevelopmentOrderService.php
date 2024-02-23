@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 
 use App\Helpers\PortalHelpers;
+use App\Models\AssignDeadLine;
 use App\Models\Auth\User;
 use App\Models\DesignOrderInfo;
 use App\Models\Draft\DraftAttachment;
@@ -301,6 +302,7 @@ class DevelopmentOrderService
 
     public function getOrderDetail($Order_ID)
     {
+        $auth_user = Auth::guard('Authorized')->user();
         return OrderInfo::where('Order_ID', $Order_ID)->with([
             'development_info',
             'authorized_user' => function ($q) {
@@ -320,7 +322,10 @@ class DevelopmentOrderService
                 $q->with('attachments');
             },
             'final_submission',
-            'revision'
+            'revision',
+            'assign_dead_lines' => function ($q) use ($auth_user) {
+                $q->where('user_id', $auth_user->id);
+            }
         ])->first();
     }
 
@@ -440,23 +445,40 @@ class DevelopmentOrderService
                         'order_id' => $Order->id,
                         'assign_id' => $user->id,
                     ]);
+                    AssignDeadLine::create([
+                        'deadline_date' => $request->DeadLine,
+                        'deadline_time' => $request->DeadLine_Time,
+                        'first_draft' => $request->F_DeadLine,
+                        'second_draft' => $request->S_DeadLine,
+                        'third_draft' => $request->T_DeadLine,
+                        'forth_draft' => $request->Four_DeadLine,
+                        'fifth_draft' => $request->Fifth_DeadLine,
+                        'sixth_draft' => $request->Sixth_DeadLine,
+                        'seventh_draft' => $request->Seven_DeadLine,
+                        'eighth_draft' => $request->Eight_DeadLine,
+                        'nineth_draft' => $request->nine_DeadLine,
+                        'tenth_draft' => $request->ten_DeadLine,
+                        'eleventh_draft' => $request->eleven_DeadLine,
+                        'twelveth_draft' => $request->twelve_DeadLine,
+                        'thirteen_draft' => $request->thirteen_DeadLine,
+                        'fourteen_draft' => $request->fourteen_DeadLine,
+                        'fifteen_draft' => $request->fifteen_DeadLine,
+                        'order_id' => $Order->id,
+                        'user_id' => $user->id,
+                    ]);
                 }
             }
-
             foreach ($users as $user) {
                 $userIds[] = (int)$user->id;
             }
-
             $authUser = Auth::guard('Authorized')->user();
             $usersToNotify = array_merge([(int)$authUser->id], $userIds);
-
             $message = $request->Order_ID . ' has been Assigned Successfully!.';
             PortalHelpers::sendNotification(null, $request->Order_ID, $message, $authUser->designation->Designation_Name, (array)$usersToNotify, [1]);
 
             DB::commit();
             return back()->with('Success!', "Order Assigned Successfully!");
         } catch (ModelNotFoundException | \Exception $e) {
-
             DB::rollBack();
             return redirect()->route('Error.Response', ['Message' => $e->getMessage()]);
         }

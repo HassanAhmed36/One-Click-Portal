@@ -1665,7 +1665,7 @@
 
 
     <!-- =================== HR Dashboard ======================== -->
-     @if ((int) $auth_user->Role_ID === 16)
+     @if ((int) $auth_user->Role_ID === 16 || (int) $auth_user->Role_ID === 3)
         <div class="row">
             <div class="col-xl-3 col-md-12 col-lg-12">
                 <div class="card" style="height: auto !important;">

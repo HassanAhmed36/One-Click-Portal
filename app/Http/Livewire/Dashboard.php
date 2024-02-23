@@ -835,6 +835,71 @@ class Dashboard extends Component
             //         }])->get();
             //     $graphic_past = array_merge($graphic_past);
             // }
+        }else if($User_Role_ID == 3){
+            $graphic_today_d = OrderInfo::join('assign_dead_lines', 'assign_dead_lines.order_id', '=', 'order_infos.id')
+                ->join('order_assigning_infos', 'order_assigning_infos.order_id', '=', 'order_infos.id')
+                ->join('development_order_infos', 'development_order_infos.order_id', '=', 'order_infos.id')
+                ->where('order_assigning_infos.assign_id', $User_ID)
+                ->whereDate('assign_dead_lines.deadline_date', '=', $todayDate)
+                ->where('development_order_infos.Order_Status', '!=', '2')
+                ->where('development_order_infos.Order_Status', '!=', '1')
+                ->select('order_infos.Order_ID', 'order_infos.Order_Type', 'assign_dead_lines.deadline_date', 'Order_Status')
+                ->get()->toArray();
+
+            $draftLetters = ['first_draft', 'second_draft', 'third_draft', 'forth_draft', 'fifth_draft', 'sixth_draft', 'seventh_draft', 'eighth_draft', 'nineth_draft', 'tenth_draft', 'eleventh_draft', 'twelveth_draft', 'thirteen_draft', 'fourteen_draft', 'fifteen_draft'];
+            $graphic_today = $graphic_today_d;
+
+            $counter_design_today = 1;
+            foreach ($draftLetters as $draftLetter) {
+                $designing_drafts = OrderInfo::join('assign_dead_lines', 'assign_dead_lines.order_id', '=', 'order_infos.id')
+                    ->join('order_assigning_infos', 'order_assigning_infos.order_id', '=', 'order_infos.id')
+                    ->join('development_order_infos', 'development_order_infos.order_id', '=', 'order_infos.id')
+                    ->where('development_order_infos.Order_Status', '!=', '2')
+                    ->where('order_assigning_infos.assign_id', $User_ID)
+                    ->whereDate("assign_dead_lines.$draftLetter", $todayDate)
+                    ->whereDoesntHave('draftSubmissions', function ($query) use ($counter_design_today) {
+                        $query->where('draft_number', $counter_design_today);
+                    })
+                    ->select('order_infos.Order_ID', 'order_infos.Order_Type', "assign_dead_lines.$draftLetter", 'Order_Status')
+                    ->get()
+                    ->toArray();
+                $graphic_today = array_merge($graphic_today, $designing_drafts);
+                $counter_design_today++;
+            }
+            $graphic_tomorrow_d = OrderInfo::join('assign_dead_lines', 'assign_dead_lines.order_id', '=', 'order_infos.id')
+                ->join('order_assigning_infos', 'order_assigning_infos.order_id', '=', 'order_infos.id')
+                ->join('development_order_infos', 'development_order_infos.order_id', '=', 'order_infos.id')
+                ->where('order_assigning_infos.assign_id', $User_ID)
+                ->whereDate('assign_dead_lines.deadline_date', '=', $tomorrowDate)
+                ->where('development_order_infos.Order_Status', '!=', '2')
+                ->where('development_order_infos.Order_Status', '!=', '1')
+                ->select('order_infos.Order_ID', 'order_infos.Order_Type', 'assign_dead_lines.deadline_date', 'Order_Status')
+                ->get()
+                ->toArray();
+
+            $draftLetters = ['first_draft', 'second_draft', 'third_draft', 'forth_draft', 'fifth_draft', 'sixth_draft', 'seventh_draft', 'eighth_draft', 'nineth_draft', 'tenth_draft', 'eleventh_draft', 'twelveth_draft', 'thirteen_draft', 'fourteen_draft', 'fifteen_draft'];
+
+            $graphic_tomorrow = $graphic_tomorrow_d; 
+
+            $counter_design_tomorrow = 1;
+            foreach ($draftLetters as $draftLetter) {
+                $designing_drafts_tomorrow = OrderInfo::join('assign_dead_lines', 'assign_dead_lines.order_id', '=', 'order_infos.id')
+                    ->join('order_assigning_infos', 'order_assigning_infos.order_id', '=', 'order_infos.id')
+                    ->join('development_order_infos', 'development_order_infos.order_id', '=', 'order_infos.id')
+                    ->where('development_order_infos.Order_Status', '!=', '2')
+                    ->where('order_assigning_infos.assign_id', $User_ID)
+                    ->whereDate("assign_dead_lines.{$draftLetter}", $tomorrowDate)
+                    ->whereDoesntHave('draftSubmissions', function ($query) use ($counter_design_tomorrow) {
+                        $query->where('draft_number', $counter_design_tomorrow);
+                    })
+                    ->select('order_infos.Order_ID', 'order_infos.Order_Type', "assign_dead_lines.{$draftLetter}", 'Order_Status')
+                    ->get()
+                    ->toArray();
+
+                $graphic_tomorrow = array_merge($graphic_tomorrow, $designing_drafts_tomorrow);
+                $counter_design_tomorrow++;
+            }
+            $graphic_past = [];
         }
         $today = Carbon::now();
         $tomorrow = Carbon::tomorrow();

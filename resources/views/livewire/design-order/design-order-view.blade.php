@@ -1010,7 +1010,6 @@
         </div>
 
         @if ((int) $auth_user->Role_ID != 16)
-
             <div class="card">
                 <div class="card-header  border-0">
                     <div class="card-title">Sales Department</div>
