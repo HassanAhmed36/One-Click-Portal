@@ -39,7 +39,6 @@ use App\Models\DevelopmentOrderInfo;
 use App\Models\ResearchOrders\OrderSubmissionInfo;
 
 
-
 class DevelopmentOrderService
 {
 
@@ -47,24 +46,19 @@ class DevelopmentOrderService
     {
         $request->validate([
             'Order_ID' => 'required',
-            'Client_Code' => 'required',
             'project_title' => 'required',
             'project_Service' => 'required',
             'DeadLine' => 'required',
-            'DeadLine_Time' => 'required'
+            'DeadLine_Time' => 'required',
+            'website_order' => 'required'
         ]);
 
         DB::beginTransaction();
-
         $checkClient = $this->getClientInfoFromRoute($request->Client_Code);
-
         $Order_Id = $this->getNewOrderID();
         $authUser = Auth::guard('Authorized')->user();
-
-
         if (empty($checkClient)) {
             $clientId = $this->createNewClient($request, $authUser);
-
             if (!$clientId) {
                 DB::rollBack();
                 return back()->with('Error!', "Order Client Failed!");
@@ -97,7 +91,6 @@ class DevelopmentOrderService
         $submissionInfo = $this->createOrderSubmissionInfo($request, $orderInfoID, $authUser->id, $clientId);
 
         if ($submissionInfo) {
-
             $reference_info = OrderReferenceInfo::create([
                 'Reference_Code' => $request->Reference_Code,
                 'order_id' => $orderInfoID,
@@ -157,7 +150,6 @@ class DevelopmentOrderService
                         DB::commit();
                         $authUser = Auth::guard('Authorized')->user();
                         $Order_Number = OrderInfo::select('Order_ID')->where('Order_ID', $request->Order_ID)->first();
-
                         $message = $Order_Number->Order_ID . "Order Created Sucessfully.";
                         PortalHelpers::sendNotification(null, $request->Order_ID, $message, $authUser->designation->Designation_Name, [$authUser->id], [1,  9, 10, 11]);
 
@@ -184,7 +176,7 @@ class DevelopmentOrderService
 
     public function getNewOrderID(): string
     {
-        $month = Carbon::now()->month; 
+        $month = Carbon::now()->month;
 
         $lastOrder = OrderInfo::withTrashed()
             ->whereMonth('created_at', $month)
@@ -201,11 +193,9 @@ class DevelopmentOrderService
         return 'OC-' . str_pad($month, 2, '0', STR_PAD_LEFT) . '-' . $currentYear . '-' . str_pad($numericPart + 1, 3, '0', STR_PAD_LEFT);
     }
 
-
     private function createNewClient($request, $authUser)
     {
         $Client_code = $this->getNewClientID();
-        
         $orderClientInfo = OrderClientInfo::create([
             'Client_Code' => $Client_code,
             'Client_Name' => $request->Client_Name,
@@ -214,7 +204,6 @@ class DevelopmentOrderService
             'Client_Phone' => $request->Client_Phone,
             'user_id' => $authUser->id
         ]);
-
         return $orderClientInfo ? $orderClientInfo->id : null;
     }
 
@@ -230,14 +219,13 @@ class DevelopmentOrderService
 
         return $orderInfo ? $orderInfo->id : null;
     }
-    
-      public function getNewClientID(): string
+
+    public function getNewClientID(): string
     {
         $lastClient = OrderClientInfo::orderBy('id', 'DESC')->first();
         if ($lastClient === null) {
             return 'Client' . '-1';
         }
-
         return 'Client' . '-' . ($lastClient->id + 1);
     }
 
@@ -256,6 +244,7 @@ class DevelopmentOrderService
         $developmentOrderInfo = DevelopmentOrderInfo::create([
             'project_title' => $request->project_title,
             'project_service' => $request->project_Service,
+            'website_order' => $request->website_order,
             'order_status' => $request->Order_Status,
             'order_id' => $orderId
         ]);
@@ -271,19 +260,27 @@ class DevelopmentOrderService
             'F_DeadLine' => $request->F_DeadLine,
             'S_DeadLine' => $request->S_DeadLine,
             'T_DeadLine' => $request->T_DeadLine,
+            'Four_DeadLine' => $request->Four_DeadLine,
+            'Fifth_DeadLine' => $request->Fifth_DeadLine,
+            'Sixth_DeadLine' => $request->Sixth_DeadLine,
+            'Seven_DeadLine' => $request->Seven_DeadLine,
+            'Eight_DeadLine' => $request->Eight_DeadLine,
+            'nine_DeadLine' => $request->nine_DeadLine,
+            'ten_DeadLine' => $request->ten_DeadLine,
+            'eleven_DeadLine' => $request->eleven_DeadLine,
+            'twelve_DeadLine' => $request->twelve_DeadLine,
+            'thirteen_DeadLine' => $request->thirteen_DeadLine,
+            'fourteen_DeadLine' => $request->fourteen_DeadLine,
+            'fifteen_DeadLine' => $request->fifteen_DeadLine,
             'order_id' => $orderId,
             'user_id' => $authUserId,
             'client_id' => $clientId,
         ]);
-
         return $submissionInfo ? $submissionInfo->id : null;
     }
 
-
-
     public function getOrdersList($Role_ID, $User_ID)
     {
-
         $query = OrderInfo::with([
             'development_info',
             'authorized_user',
@@ -293,16 +290,12 @@ class DevelopmentOrderService
             'basic_info',
             'assign',
         ])->where('Order_Type', 4);
-
-
         if ($Role_ID == 3) {
             $query->whereHas('assign', function ($query) use ($User_ID) {
                 $query->where('assign_id', $User_ID);
             });
         }
-
         $designOrderList = $query->orderByDesc('id')->get();
-
         return $designOrderList;
     }
 
@@ -333,7 +326,6 @@ class DevelopmentOrderService
 
     public function DeleteDevelopmentOrder($Order_ID)
     {
-
         $order_id = Crypt::decryptString($Order_ID);
         $DeleteOrder = OrderInfo::where('id', $order_id)->delete();
         if ($DeleteOrder) {
@@ -346,27 +338,36 @@ class DevelopmentOrderService
         $Order_ID = $request->Order_ID;
         $authUser = Auth::guard('Authorized')->user();
         $order_id = OrderInfo::where('Order_ID', $Order_ID)->pluck('id');
-
         DB::beginTransaction();
-
         $UpdateOrder = OrderInfo::where('Order_ID', $Order_ID)->update([
-            'Order_Type' => $request->Order_Type,
-            'user_id' => $authUser->id
+            'Order_Type' => 4,
         ]);
         if ($UpdateOrder) {
             $OrderDevelopmentInfo =  DevelopmentOrderInfo::where('order_id', $order_id)->update([
                 'project_title' => $request->project_title,
                 'project_service' => $request->project_Service,
+                'website_order' => $request->website_order,
                 'order_status' => $request->Order_Status,
             ]);
             if ($OrderDevelopmentInfo) {
                 $OrderSubmissionInfo = OrderSubmissionInfo::where('order_id', $order_id)->update([
                     'DeadLine' => $request->DeadLine,
                     'DeadLine_Time' => $request->DeadLine_Time,
-                    'F_DeadLine' =>  $request->F_DeadLine,
+                    'F_DeadLine' => $request->F_DeadLine,
                     'S_DeadLine' => $request->S_DeadLine,
-                    'T_DeadLine'  => $request->T_DeadLine,
-
+                    'T_DeadLine' => $request->T_DeadLine,
+                    'Four_DeadLine' => $request->Four_DeadLine,
+                    'Fifth_DeadLine' => $request->Fifth_DeadLine,
+                    'Sixth_DeadLine' => $request->Sixth_DeadLine,
+                    'Seven_DeadLine' => $request->Seven_DeadLine,
+                    'Eight_DeadLine' => $request->Eight_DeadLine,
+                    'nine_DeadLine' => $request->nine_DeadLine,
+                    'ten_DeadLine' => $request->ten_DeadLine,
+                    'eleven_DeadLine' => $request->eleven_DeadLine,
+                    'twelve_DeadLine' => $request->twelve_DeadLine,
+                    'thirteen_DeadLine' => $request->thirteen_DeadLine,
+                    'fourteen_DeadLine' => $request->fourteen_DeadLine,
+                    'fifteen_DeadLine' => $request->fifteen_DeadLine,
                 ]);
                 if ($OrderSubmissionInfo) {
                     $OrderRefrenceInfo = OrderReferenceInfo::where('order_id', $order_id)->update([
@@ -399,13 +400,13 @@ class DevelopmentOrderService
                                     }
                                     if ($flag) {
                                         DB::commit();
-                                        return back()->with('Success!', "Order updated Successfully!");
+                                        return redirect()->route('development.order.list')->with('Success!', "Order updated Successfully!");
                                     }
                                     DB::rollBack();
                                     return back()->with('Error!', "Attachments Error!");
                                 }
                                 DB::commit();
-                                return back()->with('Success!', "Order updated Successfully!");
+                                return redirect()->route('development.order.list')->with('Success!', "Order updated Successfully!");
                             }
                         } else {
                             return back()->with('Error!', "Order Description Info Failed!");
@@ -580,9 +581,7 @@ class DevelopmentOrderService
             foreach ($uploadedFiles as $key => $file) {
                 $fileName = $file->getClientOriginalName();
                 $filePath = 'Uploads/Revision-Attachments/' . $request->Revision_ID . '/' . $fileName;
-
                 $file->move(public_path('Uploads/Revision-Attachments/' . $request->Revision_ID . '/'), $fileName);
-
                 SubmitRevisionAttachment::create([
                     'file_name' => $fileName,
                     'file_path' => $filePath,
@@ -695,8 +694,4 @@ class DevelopmentOrderService
         DB::commit();
         return back()->with('Success!', 'Order Revision Submitted!');
     }
-
-
-
-
 }

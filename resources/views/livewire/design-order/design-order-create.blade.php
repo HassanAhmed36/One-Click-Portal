@@ -529,81 +529,83 @@
                 $('#addNewDraft').hide();
             }
         });
+    });
 
-        const searchOrderID = '{{ route('Get.Clients') }}';
-        $('#myTypeahead').autocomplete({
-            source: function(request, response) {
-                $.get(searchOrderID, {
-                    query: request.term
-                }, function(data) {
-                    response(data);
-                });
-            },
-            select: function(event, ui) {
-                getClientInfo(ui.item.value)
-            }
-        });
 
-        function getClientInfo(value) {
-            $.ajax({
-                url: '{{ route('Get.Client.Info') }}',
-                type: 'GET',
-                data: {
-                    'query': value
-                },
-                success: function(data) {
-                    $('.Client-Code').val(data.Client_Code);
-                    $('.Client_Name').val(data.Client_Name);
-                    $('.Client_Phone').val(data.Client_Phone);
-                    $('.Client_Country').val(data.Client_Country).trigger('change');
-                    $('.Client_Email').val(data.Client_Email);
-                }
+    const searchOrderID = '{{ route('Get.Clients') }}';
+    $('#myTypeahead').autocomplete({
+        source: function(request, response) {
+            $.get(searchOrderID, {
+                query: request.term
+            }, function(data) {
+                response(data);
             });
+        },
+        select: function(event, ui) {
+            getClientInfo(ui.item.value)
         }
+    });
 
-        $('.Client_Name').keyup(function() {
-            var Client_Name = $(this).val();
-            if (Client_Name === '') {
-                $('.Client-Code').val('');
-                $('.Client_Name').val('');
-                $('.Client_Phone').val('');
-                $('.Client_Country').val('').trigger('change');
-                $('.Client_Email').val('');
+    function getClientInfo(value) {
+        $.ajax({
+            url: '{{ route('Get.Client.Info') }}',
+            type: 'GET',
+            data: {
+                'query': value
+            },
+            success: function(data) {
+                $('.Client-Code').val(data.Client_Code);
+                $('.Client_Name').val(data.Client_Name);
+                $('.Client_Phone').val(data.Client_Phone);
+                $('.Client_Country').val(data.Client_Country).trigger('change');
+                $('.Client_Email').val(data.Client_Email);
             }
         });
+    }
 
-        $('.Partial-Info').hide();
-        $('.Partial_Payment').change(function() {
-            const mode = $(this).val();
-            if (mode === '2') {
-                $('.Partial-Info').show();
-            } else {
-                $('.Partial-Info').hide();
-            }
-        });
+    $('.Client_Name').keyup(function() {
+        var Client_Name = $(this).val();
+        if (Client_Name === '') {
+            $('.Client-Code').val('');
+            $('.Client_Name').val('');
+            $('.Client_Phone').val('');
+            $('.Client_Country').val('').trigger('change');
+            $('.Client_Email').val('');
+        }
+    });
 
-        $('#Rec_Amount').keyup(function() {
-            var Payment = $('#Order_Price').val();
-            var Rec_Amount = $(this).val();
-            var Due_Amount = Payment - Rec_Amount;
-            $('#Due_Amount').val(Due_Amount);
-        });
+    $('.Partial-Info').hide();
+    $('.Partial_Payment').change(function() {
+        const mode = $(this).val();
+        if (mode === '2') {
+            $('.Partial-Info').show();
+        } else {
+            $('.Partial-Info').hide();
+        }
+    });
 
-        // Initially hiding all elements
-        var $elements = $(
-            '#primary-color, #secondary-color, #font-size, #size-of-design, #graphic-formate, #video-formate, #video-type'
-        ).hide();
+    $('#Rec_Amount').keyup(function() {
+        var Payment = $('#Order_Price').val();
+        var Rec_Amount = $(this).val();
+        var Due_Amount = Payment - Rec_Amount;
+        $('#Due_Amount').val(Due_Amount);
+    });
 
-        $('#Project-Service').change(function() {
-            var Value = $(this).val();
-            $elements.hide();
-            if (Value == 1) {
-                $('#primary-color, #secondary-color, #font-size, #size-of-design, #graphic-formate')
-                    .show();
-            } else if (Value == 2) {
-                $('#video-formate, #video-type').show();
-            }
-        });
+    // Initially hiding all elements
+    var $elements = $(
+        '#primary-color, #secondary-color, #font-size, #size-of-design, #graphic-formate, #video-formate, #video-type'
+    ).hide();
+
+    $('#Project-Service').change(function() {
+    var Value = $(this).val();
+    $elements.hide();
+    if (Value == 1) {
+        $('#primary-color, #secondary-color, #font-size, #size-of-design, #graphic-formate')
+            .show();
+    } else if (Value == 2) {
+        $('#video-formate, #video-type').show();
+    }
+    });
 
 
     });

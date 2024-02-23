@@ -279,11 +279,21 @@
                                             <div class="d-flex">
                                                 <div class="me-3 mt-0 mt-sm-2 d-block">
                                                     <h6 class="mb-1 fs-16">
-                                                        <a
-                                                            href="{{ route($Order['Order_Type'] == 2 ? 'Content.Order.Details' : ($Order['Order_Type'] == 3 ? 'Design.Order.View' : 'Order.Details'), ['Order_ID' => $Order['Order_ID']]) }}">
+                                                        @php
+                                                            $route = '';
+                                                        @endphp
+                                                        @if ($Order['Order_Type'] == 2)
+                                                            @php $route = route('Content.Order.Details', ['Order_ID' => $Order['Order_ID']]) @endphp
+                                                        @elseif ($Order['Order_Type'] == 3)
+                                                            @php $route = route('Design.Order.View', ['Order_ID' => $Order['Order_ID']]) @endphp
+                                                        @elseif ($Order['Order_Type'] == 4)
+                                                            @php $route = route('Development.Order.View', ['Order_ID' => $Order['Order_ID']]) @endphp
+                                                        @elseif ($Order['Order_Type'] == 1)
+                                                            @php $route = route('Order.Details', ['Order_ID' => $Order['Order_ID']]) @endphp
+                                                        @endif
+                                                        <a href="{{ $route }}">
                                                             {{ $Order['Order_ID'] }}
                                                         </a>
-
                                                     </h6>
                                                 </div>
                                             </div>
@@ -410,11 +420,21 @@
                                             <div class="d-flex">
                                                 <div class="me-3 mt-0 mt-sm-2 d-block">
                                                     <h6 class="mb-1 fs-16">
-                                                        <a
-                                                            href="{{ route($Order['Order_Type'] == 2 ? 'Content.Order.Details' : ($Order['Order_Type'] == 3 ? 'Design.Order.View' : 'Order.Details'), ['Order_ID' => $Order['Order_ID']]) }}">
+                                                        @php
+                                                            $route = '';
+                                                        @endphp
+                                                        @if ($Order['Order_Type'] == 2)
+                                                            @php $route = route('Content.Order.Details', ['Order_ID' => $Order['Order_ID']]) @endphp
+                                                        @elseif ($Order['Order_Type'] == 3)
+                                                            @php $route = route('Design.Order.View', ['Order_ID' => $Order['Order_ID']]) @endphp
+                                                        @elseif ($Order['Order_Type'] == 4)
+                                                            @php $route = route('Development.Order.View', ['Order_ID' => $Order['Order_ID']]) @endphp
+                                                        @elseif ($Order['Order_Type'] == 1)
+                                                            @php $route = route('Order.Details', ['Order_ID' => $Order['Order_ID']]) @endphp
+                                                        @endif
+                                                        <a href="{{ $route }}">
                                                             {{ $Order['Order_ID'] }}
                                                         </a>
-
                                                     </h6>
                                                 </div>
                                             </div>
@@ -426,10 +446,8 @@
                                                 (int) $auth_user->Role_ID === 11)
                                             <td>{{ $Order['Client_Name'] }}</td>
                                         @endif
-                                        @if ((int) $auth_user->Role_ID === 4)
-                                            <td>{{ $Order['Order_Type'] == 2 ? 'Content Writing Order' : 'Reseacrh Writing Order' }}
-                                            </td>
-                                        @endif
+                                        <td>{{ $Order['Order_Type'] == 2 ? 'Content Writing Order' : 'Reseacrh Writing Order' }}
+                                        </td>
                                         <td>{{ $Order['Word_Count'] ?? 'No word Count' }}
                                         </td>
                                         <td>
@@ -1647,45 +1665,7 @@
 
 
     <!-- =================== HR Dashboard ======================== -->
-    @if ((int) $auth_user->Role_ID === 2 || (int) $auth_user->Role_ID === 1)
-        <!--Row-->
-        <div class="row">
-
-            @if ($Get_Notice->isNotEmpty())
-                <div class="col-xl-3 col-md-12 col-lg-12">
-                    <div class="card overflow-hidden">
-                        <div class="card-header border-0">
-                            <h4 class="card-title">Notice Board</h4>
-                        </div>
-                        <div class="pt-2">
-                            <div class="list-group">
-                                @foreach ($Get_Notice as $Notice)
-                                    <div class="list-group-item d-flex pt-3 pb-3 align-items-center border-0">
-                                        <div class="me-3 me-xs-0">
-                                            <div class="calendar-icon icons">
-                                                <div class="date_time bg-pink-transparent"><span
-                                                        class="date">{{ date('d', strtotime($Notice->created_at)) }}</span>
-                                                    <span
-                                                        class="month">{{ date('M', strtotime($Notice->created_at)) }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="ms-1">
-                                            <div class="h5 fs-14 mb-1">{{ $Notice->Notice_Title }}</div>
-                                            <small
-                                                class="text-muted">{{ substr($Notice->Notice_Desc, 0, 50) }}</small>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endif
-        </div>
-    @endif
-
-    @if ((int) $auth_user->Role_ID === 16)
+     @if ((int) $auth_user->Role_ID === 16)
         <div class="row">
             <div class="col-xl-3 col-md-12 col-lg-12">
                 <div class="card" style="height: auto !important;">
@@ -1967,7 +1947,7 @@
                                             </div>
                                         </td>
 
-                                      <td>
+                                        <td>
                                             @if (isset($Order['deadline_date']))
                                                 {{ $Order['deadline_date'] }} <span
                                                     class="text-danger">(Deadline)</span>

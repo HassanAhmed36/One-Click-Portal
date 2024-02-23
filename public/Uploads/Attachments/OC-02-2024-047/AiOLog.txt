@@ -1,0 +1,30 @@
+Default applications
+.NET Framework 2.0 - 3.5.1:                                       	Failed. Error Code: 3221225786 (0xC000013A)
+Java: Fix MS SystemUser Bug:                                   	End!
+Java: Remove old Installation:                                   	Failed. Error Code: 3221225786 (0xC000013A)
+Java Runtime Environment 8 Update 251:               	End!
+Java Runtime Environment 8 Update 251 x64:        	End!
+Visual C++ 2005 Uninstall:                                         	End!
+Visual C++ 2005:                                                         	End!
+Visual C++ 2005 x64:                                                  	End!
+Visual C++ 2008 Uninstall:                                         	End!
+Visual C++ 2008:                                                         	End!
+Visual C++ 2008 x64:                                                  	End!
+Visual C++ 2012 Uninstall:                                         	End!
+Visual C++ 2012 Minimum:                                      	End!
+Visual C++ 2012 Additional:                                      	End!
+Visual C++ 2012 Minimum x64:                               	End!
+Visual C++ 2012 Additional x64:                               	End!
+Visual C++ 2013 Uninstall:                                         	Failed. Error Code: 3221225786 (0xC000013A)
+Visual C++ 2013:                                                         	End!
+Visual C++ 2013 x64:                                                  	End! (Reboot required)
+
+Other Runtimes
+Microsoft Visual J-Sharp 2.0 SE:                                	Failed. Error Code: 4121 (0x00001019)
+
+Default applications
+Microsoft Silverlight v5.1.50918.0 x64:                     	End!
+
+System Runtimes
+Allgemeine Runtime Dateien:                                   	End!
+Microsoft DirectX 9.0c Redistributable:                   	End!

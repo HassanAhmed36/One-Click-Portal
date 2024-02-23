@@ -3,17 +3,14 @@
         background: url({{ asset('assets/images/pattern2.png') }}) !important;
         overflow-y: auto;
     }
-
     .chatbox .card,
     #chatmodel {
         min-height: 100vh !important;
     }
-
     .card-body.pt-2.ps-3.pr-3 tr {
         text-align: right !important;
     }
 </style>
-
 <div class="page-header d-xl-flex d-block">
     <div class="page-rightheader ms-md-auto">
         <div class="d-flex align-items-end flex-wrap my-auto end-content breadcrumb-end">
@@ -70,9 +67,7 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="tab5">
                     <div class="card-body">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi error dolore perspiciatis fuga
-                        voluptate consectetur, voluptatum architecto in voluptatem sed expedita iure, ratione, laborum
-                        esse accusamus beatae maiores illum dignissimos?
+                        {!! $DevelopmentOrder->order_desc->Description !!}
                     </div>
                 </div>
                 <div class="tab-pane" id="tab7">
@@ -472,6 +467,186 @@
                                     </td>
                                 </tr>
                             @endif
+                            @if (!empty($DevelopmentOrder->submission_info->F_DeadLine))
+                                <tr>
+                                    <td>
+                                        <span class="w-50">First Draft</span>
+                                    </td>
+                                    <td>:</td>
+                                    <td>
+                                        <span
+                                            class="font-weight-semibold text-danger">{{ $DevelopmentOrder->submission_info->F_DeadLine }}</span>
+                                    </td>
+                                </tr>
+                            @endif
+                            @if (!empty($DevelopmentOrder->submission_info->S_DeadLine))
+                                <tr>
+                                    <td>
+                                        <span class="w-50">Second Draft</span>
+                                    </td>
+                                    <td>:</td>
+                                    <td>
+                                        <span
+                                            class="font-weight-semibold text-danger">{{ $DevelopmentOrder->submission_info->S_DeadLine }}</span>
+                                    </td>
+                                </tr>
+                            @endif
+                            @if (!empty($DevelopmentOrder->submission_info->T_DeadLine))
+                                <tr>
+                                    <td>
+                                        <span class="w-50">Third Draft</span>
+                                    </td>
+                                    <td>:</td>
+                                    <td>
+                                        <span
+                                            class="font-weight-semibold text-danger">{{ $DevelopmentOrder->submission_info->T_DeadLine }}</span>
+                                    </td>
+                                </tr>
+                            @endif
+                            @if (!empty($DevelopmentOrder->submission_info->Four_DeadLine))
+                                <tr>
+                                    <td>
+                                        <span class="w-50">Fourth Draft</span>
+                                    </td>
+                                    <td>:</td>
+                                    <td>
+                                        <span
+                                            class="font-weight-semibold text-danger">{{ $DevelopmentOrder->submission_info->Four_DeadLine }}</span>
+                                    </td>
+                                </tr>
+                            @endif
+                            @if (!empty($DevelopmentOrder->submission_info->Fifth_DeadLine))
+                                <tr>
+                                    <td>
+                                        <span class="w-50">Fifth Draft</span>
+                                    </td>
+                                    <td>:</td>
+                                    <td>
+                                        <span
+                                            class="font-weight-semibold text-danger">{{ $DevelopmentOrder->submission_info->Fifth_DeadLine }}</span>
+                                    </td>
+                                </tr>
+                            @endif
+                            @if (!empty($DevelopmentOrder->submission_info->Sixth_DeadLine))
+                                <tr>
+                                    <td>
+                                        <span class="w-50">Sixth Draft</span>
+                                    </td>
+                                    <td>:</td>
+                                    <td>
+                                        <span
+                                            class="font-weight-semibold text-danger">{{ $DevelopmentOrder->submission_info->Sixth_DeadLine }}</span>
+                                    </td>
+                                </tr>
+                            @endif
+                            @if (!empty($DevelopmentOrder->submission_info->Seven_DeadLine))
+                                <tr>
+                                    <td>
+                                        <span class="w-50">Seventh Draft</span>
+                                    </td>
+                                    <td>:</td>
+                                    <td>
+                                        <span
+                                            class="font-weight-semibold text-danger">{{ $DevelopmentOrder->submission_info->Seven_DeadLine }}</span>
+                                    </td>
+                                </tr>
+                            @endif
+                            @if (!empty($DevelopmentOrder->submission_info->Eight_DeadLine))
+                                <tr>
+                                    <td>
+                                        <span class="w-50">Eighth Draft</span>
+                                    </td>
+                                    <td>:</td>
+                                    <td>
+                                        <span
+                                            class="font-weight-semibold text-danger">{{ $DevelopmentOrder->submission_info->Eight_DeadLine }}</span>
+                                    </td>
+                                </tr>
+                            @endif
+                            @if (!empty($DevelopmentOrder->submission_info->nine_DeadLine))
+                                <tr>
+                                    <td>
+                                        <span class="w-50">Ninth Draft</span>
+                                    </td>
+                                    <td>:</td>
+                                    <td>
+                                        <span
+                                            class="font-weight-semibold text-danger">{{ $DevelopmentOrder->submission_info->nine_DeadLine }}</span>
+                                    </td>
+                                </tr>
+                            @endif
+                            @if (!empty($DevelopmentOrder->submission_info->ten_DeadLine))
+                                <tr>
+                                    <td>
+                                        <span class="w-50">Tenth Draft</span>
+                                    </td>
+                                    <td>:</td>
+                                    <td>
+                                        <span
+                                            class="font-weight-semibold text-danger">{{ $DevelopmentOrder->submission_info->ten_DeadLine }}</span>
+                                    </td>
+                                </tr>
+                            @endif
+                            @if (!empty($DevelopmentOrder->submission_info->eleven_DeadLine))
+                                <tr>
+                                    <td>
+                                        <span class="w-50">Eleventh Draft</span>
+                                    </td>
+                                    <td>:</td>
+                                    <td>
+                                        <span
+                                            class="font-weight-semibold text-danger">{{ $DevelopmentOrder->submission_info->eleven_DeadLine }}</span>
+                                    </td>
+                                </tr>
+                            @endif
+                            @if (!empty($DevelopmentOrder->submission_info->twelve_DeadLine))
+                                <tr>
+                                    <td>
+                                        <span class="w-50">Twelfth Draft</span>
+                                    </td>
+                                    <td>:</td>
+                                    <td>
+                                        <span
+                                            class="font-weight-semibold text-danger">{{ $DevelopmentOrder->submission_info->twelve_DeadLine }}</span>
+                                    </td>
+                                </tr>
+                            @endif
+                            @if (!empty($DevelopmentOrder->submission_info->thirteen_DeadLine))
+                                <tr>
+                                    <td>
+                                        <span class="w-50">Thirteenth Draft</span>
+                                    </td>
+                                    <td>:</td>
+                                    <td>
+                                        <span
+                                            class="font-weight-semibold text-danger">{{ $DevelopmentOrder->submission_info->thirteen_DeadLine }}</span>
+                                    </td>
+                                </tr>
+                            @endif
+                            @if (!empty($DevelopmentOrder->submission_info->fourteen_DeadLine))
+                                <tr>
+                                    <td>
+                                        <span class="w-50">Fourteenth Draft</span>
+                                    </td>
+                                    <td>:</td>
+                                    <td>
+                                        <span
+                                            class="font-weight-semibold text-danger">{{ $DevelopmentOrder->submission_info->fourteen_DeadLine }}</span>
+                                    </td>
+                                </tr>
+                            @endif
+                            @if (!empty($DevelopmentOrder->submission_info->fifteen_DeadLine))
+                                <tr>
+                                    <td>
+                                        <span class="w-50">Fifteenth Draft</span>
+                                    </td>
+                                    <td>:</td>
+                                    <td>
+                                        <span
+                                            class="font-weight-semibold text-danger">{{ $DevelopmentOrder->submission_info->fifteen_DeadLine }}</span>
+                                    </td>
+                                </tr>
+                            @endif
                             @if (!empty($DevelopmentOrder->submission_info->DeadLine))
                                 <tr>
                                     <td>
@@ -752,408 +927,408 @@
 </div>
 
 
-    <!-- Assign Modal -->
-    <div class="modal fade" id="AssignModal">
-        <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content">
-                <form action="{{ route('Development.Assign.Order') }}" method="POST"
-                    class="needs-validation was-validated">
-                    @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title">Assign Order</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <input type="hidden" name="Order_ID" value="{{ $DevelopmentOrder->Order_ID }}">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-label" for="Assign_ID">Developer</label>
-                                    <select name="Assign_ID[]" id="Assign_ID" class="form-control select2"
-                                        data-placeholder="Select Coordinator" multiple required>
-                                        <option value="">Select User</option>
-                                        @forelse($AssignUser as $User)
-                                            <option value="{{ $User->id }}">{{ $User->basic_info->full_name }}
-                                            </option>
-                                        @empty
-                                            <option value="">No User available</option>
-                                        @endforelse
-                                    </select>
-                                </div>
+<!-- Assign Modal -->
+<div class="modal fade" id="AssignModal">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <form action="{{ route('Development.Assign.Order') }}" method="POST"
+                class="needs-validation was-validated">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title">Assign Order</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <input type="hidden" name="Order_ID" value="{{ $DevelopmentOrder->Order_ID }}">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label" for="Assign_ID">Developer</label>
+                                <select name="Assign_ID[]" id="Assign_ID" class="form-control select2"
+                                    data-placeholder="Select Coordinator" multiple required>
+                                    <option value="">Select User</option>
+                                    @forelse($AssignUser as $User)
+                                        <option value="{{ $User->id }}">{{ $User->basic_info->full_name }}
+                                        </option>
+                                    @empty
+                                        <option value="">No User available</option>
+                                    @endforelse
+                                </select>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary btn-block">Assign Order</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-block">Assign Order</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <div class="modal fade" id="FinalSubmissionModal">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <form action="{{ route('Development.final.Submission') }}" method="POST"
-                    class="needs-validation was-validated" enctype="multipart/form-data">
-                    @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title">Final Submission For Current Order</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <input type="hidden" name="order_id" value="{{ $DevelopmentOrder->id }}">
-                            <input type="hidden" name="Order_ID" value="{{ $DevelopmentOrder->Order_ID }}">
-                            <input type="hidden" name="task_id" class="task-id">
-                            <input type="hidden" name="submit_by" value="{{ Auth::guard('Authorized')->user()->id }}">
-                            <input type="hidden" name="user_id" value="{{ Auth::guard('Authorized')->user()->id }}">
-                            <div class="col-lg-12">
-                                <div class="form-group">
-                                    <label for="form-label" class="form-label"></label>
-                                    <input class="form-control" type="file" name="files[]" multiple>
-                                </div>
+<div class="modal fade" id="FinalSubmissionModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form action="{{ route('Development.final.Submission') }}" method="POST"
+                class="needs-validation was-validated" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title">Final Submission For Current Order</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <input type="hidden" name="order_id" value="{{ $DevelopmentOrder->id }}">
+                        <input type="hidden" name="Order_ID" value="{{ $DevelopmentOrder->Order_ID }}">
+                        <input type="hidden" name="task_id" class="task-id">
+                        <input type="hidden" name="submit_by" value="{{ Auth::guard('Authorized')->user()->id }}">
+                        <input type="hidden" name="user_id" value="{{ Auth::guard('Authorized')->user()->id }}">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="form-label" class="form-label"></label>
+                                <input class="form-control" type="file" name="files[]" multiple>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary btn-block">Upload Final Submission</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-block">Upload Final Submission</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <div class="modal fade" id="ViewRevision">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <form action="" method="POST" class="needs-validation was-validated"
-                    enctype="multipart/form-data">
-                    @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title">View Revision Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <input type="hidden" id="Order_ID" name="order_id"
-                                value="{{ $DevelopmentOrder->Order_ID }}">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="form-label" class="form-label"></label>
-                                    <div class="p-2">
-                                        <h4>Order Description</h4>
-                                        <p id="revision_details"></p>
+<div class="modal fade" id="ViewRevision">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form action="" method="POST" class="needs-validation was-validated"
+                enctype="multipart/form-data">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title">View Revision Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <input type="hidden" id="Order_ID" name="order_id"
+                            value="{{ $DevelopmentOrder->Order_ID }}">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="form-label" class="form-label"></label>
+                                <div class="p-2">
+                                    <h4>Order Description</h4>
+                                    <p id="revision_details"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mt-5">
+                            <label class="form-label">DeadLine</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="feather feather-calendar"></i>
                                     </div>
                                 </div>
+                                <input class="form-control" id="Order_Deadline_Date" name="DeadLine" type="text"
+                                    readonly>
                             </div>
-                            <div class="col-md-6 mt-5">
-                                <label class="form-label">DeadLine</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">
-                                            <i class="feather feather-calendar"></i>
-                                        </div>
+                        </div>
+                        <div class="col-md-6 mt-5">
+                            <label class="form-label">DeadLine Time</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <span class="feather feather-clock"></span>
                                     </div>
-                                    <input class="form-control" id="Order_Deadline_Date" name="DeadLine" type="text"
-                                        readonly>
-                                </div>
-                            </div>
-                            <div class="col-md-6 mt-5">
-                                <label class="form-label">DeadLine Time</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">
-                                            <span class="feather feather-clock"></span>
-                                        </div>
-                                    </div><!-- input-group-prepend -->
-                                    <input class="form-control Order-Time" placeholder="Set time" name="DeadLine_Time"
-                                        type="time" id="Order_Deadline_Time" required readonly>
-                                </div><!-- input-group -->
-                            </div>
-                            <div class="table-responsive mt-5">
-                                <h4 class="my-4">Upload by Sales</h4>
-                                <table class="table text-center table-vcenter text-nowrap table-bordered border-bottom"
-                                    id="Revision_view_table">
-                                    <thead>
-                                        <tr>
-                                            <th class="border-bottom-0 text-center w-5">No</th>
-                                            <th class="border-bottom-0">File Name</th>
-                                            <th class="border-bottom-0">Download File</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                </div><!-- input-group-prepend -->
+                                <input class="form-control Order-Time" placeholder="Set time" name="DeadLine_Time"
+                                    type="time" id="Order_Deadline_Time" required readonly>
+                            </div><!-- input-group -->
+                        </div>
+                        <div class="table-responsive mt-5">
+                            <h4 class="my-4">Upload by Sales</h4>
+                            <table class="table text-center table-vcenter text-nowrap table-bordered border-bottom"
+                                id="Revision_view_table">
+                                <thead>
+                                    <tr>
+                                        <th class="border-bottom-0 text-center w-5">No</th>
+                                        <th class="border-bottom-0">File Name</th>
+                                        <th class="border-bottom-0">Download File</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="table-responsive mt-5">
-                                <h4 class="my-4">Upload by Writer</h4>
-                                <table class="table text-center table-vcenter text-nowrap table-bordered border-bottom"
-                                    id="Writer_Submission_view_table">
-                                    <thead>
-                                        <tr>
-                                            <th class="border-bottom-0 text-center w-5">No</th>
-                                            <th class="border-bottom-0">File Name</th>
-                                            <th class="border-bottom-0">Upload By</th>
-                                            <th class="border-bottom-0">Download File</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-responsive mt-5">
+                            <h4 class="my-4">Upload by Writer</h4>
+                            <table class="table text-center table-vcenter text-nowrap table-bordered border-bottom"
+                                id="Writer_Submission_view_table">
+                                <thead>
+                                    <tr>
+                                        <th class="border-bottom-0 text-center w-5">No</th>
+                                        <th class="border-bottom-0">File Name</th>
+                                        <th class="border-bottom-0">Upload By</th>
+                                        <th class="border-bottom-0">Download File</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
 
 
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+                </div>
 
-                </form>
-            </div>
+            </form>
         </div>
     </div>
+</div>
 
 
-    <div class="modal fade" id="SubmitRevision">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <form action="{{ route('Submit.Upload.Order.Revision') }}" method="POST"
-                    class="needs-validation was-validated" enctype="multipart/form-data">
-                    @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title">Upload Revision</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <input type="hidden" id="hidden_Revision_ID" name="Revision_ID" value="">
-                            <input type="hidden" name="upload_by" value="{{ Auth::guard('Authorized')->user()->id }}">
-                            <input type="hidden" name="Order_ID" value="{{ $DevelopmentOrder->id }}">
-                            <input type="hidden" name="Order_Number" value="{{ $DevelopmentOrder->Order_ID }}">
+<div class="modal fade" id="SubmitRevision">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form action="{{ route('Submit.Upload.Order.Revision') }}" method="POST"
+                class="needs-validation was-validated" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title">Upload Revision</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <input type="hidden" id="hidden_Revision_ID" name="Revision_ID" value="">
+                        <input type="hidden" name="upload_by" value="{{ Auth::guard('Authorized')->user()->id }}">
+                        <input type="hidden" name="Order_ID" value="{{ $DevelopmentOrder->id }}">
+                        <input type="hidden" name="Order_Number" value="{{ $DevelopmentOrder->Order_ID }}">
 
-                            <div class="col-lg-12">
-                                <div class="form-group">
-                                    <label for="form-label" class="form-label"></label>
-                                    <input class="form-control" type="file" name="files[]" multiple>
-                                </div>
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary btn-block">Submit Revision </button>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="form-label" class="form-label"></label>
+                                <input class="form-control" type="file" name="files[]" multiple>
                             </div>
                         </div>
-                    </div>
 
-                </form>
-            </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary btn-block">Submit Revision </button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
         </div>
     </div>
+</div>
 
-    <div class="modal fade" id="EditRevision">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <form action="{{ route('Update.Development.Revision.Order') }}" method="POST"
-                    class="needs-validation was-validated" enctype="multipart/form-data">
-                    @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title">Edit Revision Deatils</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <input type="hidden" name="Revision_id" value="" id="Edit_Revision_ID">
-                            <input type="hidden" name="Order_ID" id="Edit_Revision_Order_ID" value="">
-                            <input type="hidden" name="revised_by" value="{{ Auth::guard('Authorized')->user()->id }}">
+<div class="modal fade" id="EditRevision">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form action="{{ route('Update.Development.Revision.Order') }}" method="POST"
+                class="needs-validation was-validated" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Revision Deatils</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <input type="hidden" name="Revision_id" value="" id="Edit_Revision_ID">
+                        <input type="hidden" name="Order_ID" id="Edit_Revision_Order_ID" value="">
+                        <input type="hidden" name="revised_by" value="{{ Auth::guard('Authorized')->user()->id }}">
 
 
 
-                            <div class="col-md-6">
-                                <label class="form-label">DeadLine</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">
-                                            <i class="feather feather-calendar"></i>
-                                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">DeadLine</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="feather feather-calendar"></i>
                                     </div>
-                                    <input class="form-control Order-DeadLine" id="Edit_Revision_Date"
-                                        placeholder="MM/DD/YYYY" name="DeadLine" type="date">
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">DeadLine Time</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">
-                                            <span class="feather feather-clock"></span>
-                                        </div>
-                                    </div><!-- input-group-prepend -->
-                                    <input class="form-control Order-Time" id="Edit_Revision_Time" placeholder="Set time"
-                                        name="DeadLine_Time" type="time" required>
-                                </div><!-- input-group -->
-                            </div>
-                            <div class="col-lg-12 mt-5">
-                                <div class="form-group">
-                                    <label for="form-label" class="form-label"></label>
-                                    <input class="form-control" type="file" name="files[]" multiple>
-                                </div>
-                            </div>
-                            <div class="table-responsive mt-5">
-                                <h4 class="my-4">Revision Attachment</h4>
-                                <table class="table text-center table-vcenter text-nowrap table-bordered border-bottom"
-                                    id="Edit_Sales_Revision">
-                                    <thead>
-                                        <tr>
-                                            <th class="border-bottom-0 text-center w-5">No</th>
-                                            <th class="border-bottom-0">File Name</th>
-
-                                            <th class="border-bottom-0">Download File</th>
-                                            <th class="border-bottom-0">Delete File</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
+                                <input class="form-control Order-DeadLine" id="Edit_Revision_Date"
+                                    placeholder="MM/DD/YYYY" name="DeadLine" type="date">
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary btn-block">Upload Revision</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="TaskRevisionModal">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <form action="{{ route('Development.Order.Revision') }}" method="POST"
-                    class="needs-validation was-validated" enctype="multipart/form-data">
-                    @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title">Add Revision For Current Order</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <input type="hidden" name="order_id" value="{{ $DevelopmentOrder->id }}">
-                            <input type="hidden" name="Order_ID" value="{{ $DevelopmentOrder->Order_ID }}">
-                            <input type="hidden" name="revised_by" value="{{ Auth::guard('Authorized')->user()->id }}">
-                            <input type="hidden" name="user_id" value="{{ Auth::guard('Authorized')->user()->id }}">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="form-label" class="form-label text-danger">The text area for the revision
-                                        description must be filled; otherwise, it will throw an error.</label>
-                                    <textarea id="summernote" class="form-control mb-4 is-invalid state-invalid" name="Order_Revision"
-                                        placeholder="Textarea (invalid state)" required></textarea>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">DeadLine</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">
-                                            <i class="feather feather-calendar"></i>
-                                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">DeadLine Time</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <span class="feather feather-clock"></span>
                                     </div>
-                                    <input class="form-control Order-DeadLine" placeholder="MM/DD/YYYY" name="DeadLine"
-                                        type="date">
-                                </div>
+                                </div><!-- input-group-prepend -->
+                                <input class="form-control Order-Time" id="Edit_Revision_Time" placeholder="Set time"
+                                    name="DeadLine_Time" type="time" required>
+                            </div><!-- input-group -->
+                        </div>
+                        <div class="col-lg-12 mt-5">
+                            <div class="form-group">
+                                <label for="form-label" class="form-label"></label>
+                                <input class="form-control" type="file" name="files[]" multiple>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label">DeadLine Time</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">
-                                            <span class="feather feather-clock"></span>
-                                        </div>
-                                    </div><!-- input-group-prepend -->
-                                    <input class="form-control Order-Time" id="tp3" placeholder="Set time"
-                                        name="DeadLine_Time" type="time" required>
-                                </div><!-- input-group -->
+                        </div>
+                        <div class="table-responsive mt-5">
+                            <h4 class="my-4">Revision Attachment</h4>
+                            <table class="table text-center table-vcenter text-nowrap table-bordered border-bottom"
+                                id="Edit_Sales_Revision">
+                                <thead>
+                                    <tr>
+                                        <th class="border-bottom-0 text-center w-5">No</th>
+                                        <th class="border-bottom-0">File Name</th>
+
+                                        <th class="border-bottom-0">Download File</th>
+                                        <th class="border-bottom-0">Delete File</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-block">Upload Revision</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="TaskRevisionModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form action="{{ route('Development.Order.Revision') }}" method="POST"
+                class="needs-validation was-validated" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Revision For Current Order</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <input type="hidden" name="order_id" value="{{ $DevelopmentOrder->id }}">
+                        <input type="hidden" name="Order_ID" value="{{ $DevelopmentOrder->Order_ID }}">
+                        <input type="hidden" name="revised_by" value="{{ Auth::guard('Authorized')->user()->id }}">
+                        <input type="hidden" name="user_id" value="{{ Auth::guard('Authorized')->user()->id }}">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="form-label" class="form-label text-danger">The text area for the revision
+                                    description must be filled; otherwise, it will throw an error.</label>
+                                <textarea id="summernote" class="form-control mb-4 is-invalid state-invalid" name="Order_Revision"
+                                    placeholder="Textarea (invalid state)" required></textarea>
                             </div>
-                            <div class="col-lg-12 mt-3">
-                                <div class="form-group">
-                                    <label for="form-label" class="form-label"></label>
-                                    <input class="form-control" type="file" name="files[]" multiple>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">DeadLine</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="feather feather-calendar"></i>
+                                    </div>
                                 </div>
+                                <input class="form-control Order-DeadLine" placeholder="MM/DD/YYYY" name="DeadLine"
+                                    type="date">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">DeadLine Time</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <span class="feather feather-clock"></span>
+                                    </div>
+                                </div><!-- input-group-prepend -->
+                                <input class="form-control Order-Time" id="tp3" placeholder="Set time"
+                                    name="DeadLine_Time" type="time" required>
+                            </div><!-- input-group -->
+                        </div>
+                        <div class="col-lg-12 mt-3">
+                            <div class="form-group">
+                                <label for="form-label" class="form-label"></label>
+                                <input class="form-control" type="file" name="files[]" multiple>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary btn-block add-btn-loader">Upload Revision</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-block add-btn-loader">Upload Revision</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <div class="modal fade" id="uploaddraft">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <form action="{{ route('Development.draft.Submission') }}" method="POST"
-                    class="needs-validation was-validated" enctype="multipart/form-data">
+<div class="modal fade" id="uploaddraft">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form action="{{ route('Development.draft.Submission') }}" method="POST"
+                class="needs-validation was-validated" enctype="multipart/form-data">
 
-                    @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title">Draft Submission</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <input type="hidden" name="order_id" value="{{ $DevelopmentOrder->id }}">
-                            <input type="hidden" name="Order_Number" value="{{ $DevelopmentOrder->Order_ID }}">
-                            <input type="hidden" name="submit_by" value="{{ Auth::guard('Authorized')->user()->id }}">
-                            <input type="hidden" name="user_id" value="{{ Auth::guard('Authorized')->user()->id }}">
-                            <div class="col-lg-12">
-                                <p class="text-danger">Please select the draft number from the dropdown that you are
-                                    submitting.</p>
-                                <div class="form-group">
-                                    <label for="form-label" class="form-label"> Select Draft</label>
-                                    <select name="draft_number" id="draft_number" class="form-select" required>
-                                        <option value="" disabled>Select Deadline</option>
-                                        @if (!empty($DevelopmentOrder->submission_info->F_DeadLine))
-                                            <option value="1">1st Draft</option>
-                                        @endif
-                                        @if (!empty($DevelopmentOrder->submission_info->S_DeadLine))
-                                            <option value="2">2nd Draft</option>
-                                        @endif
-                                        @if (!empty($DevelopmentOrder->submission_info->T_DeadLine))
-                                            <option value="3">3rd Draft</option>
-                                        @endif
-                                    </select>
-                                </div>
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title">Draft Submission</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <input type="hidden" name="order_id" value="{{ $DevelopmentOrder->id }}">
+                        <input type="hidden" name="Order_Number" value="{{ $DevelopmentOrder->Order_ID }}">
+                        <input type="hidden" name="submit_by" value="{{ Auth::guard('Authorized')->user()->id }}">
+                        <input type="hidden" name="user_id" value="{{ Auth::guard('Authorized')->user()->id }}">
+                        <div class="col-lg-12">
+                            <p class="text-danger">Please select the draft number from the dropdown that you are
+                                submitting.</p>
+                            <div class="form-group">
+                                <label for="form-label" class="form-label"> Select Draft</label>
+                                <select name="draft_number" id="draft_number" class="form-select" required>
+                                    <option value="" disabled>Select Deadline</option>
+                                    @if (!empty($DevelopmentOrder->submission_info->F_DeadLine))
+                                        <option value="1">1st Draft</option>
+                                    @endif
+                                    @if (!empty($DevelopmentOrder->submission_info->S_DeadLine))
+                                        <option value="2">2nd Draft</option>
+                                    @endif
+                                    @if (!empty($DevelopmentOrder->submission_info->T_DeadLine))
+                                        <option value="3">3rd Draft</option>
+                                    @endif
+                                </select>
                             </div>
-                            <div class="col-lg-12">
-                                <div class="form-group">
-                                    <label for="form-label" class="form-label"></label>
-                                    <input class="form-control" type="file" name="files[]" multiple>
-                                </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="form-label" class="form-label"></label>
+                                <input class="form-control" type="file" name="files[]" multiple>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary btn-block">Upload Draft Submission</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-block">Upload Draft Submission</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 <script>

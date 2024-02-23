@@ -4,13 +4,22 @@
         <h4 class="page-title">Development<span class="font-weight-normal text-muted ms-2"> Orders</span></h4>
     </div>
 </div>
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li class="mb-2">{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <div class="card">
     <div class="card-header border-bottom-0">
         <h3 class="card-title">New Order Details</h3>
     </div>
     <div class="card-body pb-2">
-        <form action="{{ route('post.create.development.order')}}" method="POST" class="needs-validation was-validated"
-            enctype="multipart/form-data">
+        <form action="{{ route('post.create.development.order') }}" method="POST"
+            class="needs-validation was-validated" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="Order_Type" value="4">
             <div class="row row-sm">
@@ -80,14 +89,14 @@
             </div>
             <h4 class="my-4">Order Information</h4>
             <div class="row row-sm mb-4">
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <div class="form-group">
                         <label class="form-label">Project Title</label>
                         <input class="form-control mb-4 is-valid" name="project_title" placeholder="Enter Project Title"
                             type="text" required>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <div class="form-group">
                         <label class="form-label">Service</label>
                         <select name="project_Service" id="Project-Service" class="form-control custom-select select2"
@@ -98,8 +107,18 @@
                         </select>
                     </div>
                 </div>
-
-                <div class="col-lg-4">
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label class="form-label">Order Websites</label>
+                        <select name="website_order" class="form-control custom-select select2"
+                            data-placeholder="Choose Order Website" required>
+                            @foreach ($Order_Websites as $website)
+                                <option value="{{ $website->Website_Name }}">{{ $website->Website_Name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-3">
                     <div class="form-group">
                         <label class="form-label">Order Status</label>
                         <select name="Order_Status" class="form-control custom-select select2"
@@ -173,6 +192,145 @@
                         </div>
                         <input class="form-control" placeholder="MM/DD/YYYY" name="T_DeadLine" type="date">
                     </div>
+                </div>
+                <div class="col-lg-3 mb-3" id="4">
+                    <label class="form-label">Fourth Date</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <span class="feather feather-calendar"></span>
+                            </div>
+                        </div>
+                        <input class="form-control" placeholder="MM/DD/YYYY" name="Four_DeadLine" type="date">
+                    </div>
+                </div>
+                <div class="col-lg-3 mb-3" id="5">
+                    <label class="form-label">Fifth Date</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <span class="feather feather-calendar"></span>
+                            </div>
+                        </div>
+                        <input class="form-control" placeholder="MM/DD/YYYY" name="Fifth_DeadLine" type="date">
+                    </div>
+                </div>
+                <div class="col-lg-3 mb-3" id="6">
+                    <label class="form-label">Sixth Date</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <span class="feather feather-calendar"></span>
+                            </div>
+                        </div>
+                        <input class="form-control" placeholder="MM/DD/YYYY" name="Sixth_DeadLine" type="date">
+                    </div>
+                </div>
+                <div class="col-lg-3 mb-3" id="7">
+                    <label class="form-label">Seventh Date</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <span class="feather feather-calendar"></span>
+                            </div>
+                        </div>
+                        <input class="form-control" placeholder="MM/DD/YYYY" name="Seven_DeadLine" type="date">
+                    </div>
+                </div>
+                <div class="col-lg-3 mb-3" id="8">
+                    <label class="form-label">Eight Date</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <span class="feather feather-calendar"></span>
+                            </div>
+                        </div>
+                        <input class="form-control" placeholder="MM/DD/YYYY" name="Eight_DeadLine" type="date">
+                    </div>
+                </div>
+                <div class="col-lg-3 mb-3" id="9">
+                    <label class="form-label">Ninth Date</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <span class="feather feather-calendar"></span>
+                            </div>
+                        </div>
+                        <input class="form-control" placeholder="MM/DD/YYYY" name="nine_DeadLine" type="date">
+                    </div>
+                </div>
+                <div class="col-lg-3 mb-3" id="10">
+                    <label class="form-label">Tenth Date</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <span class="feather feather-calendar"></span>
+                            </div>
+                        </div>
+                        <input class="form-control" placeholder="MM/DD/YYYY" name="ten_DeadLine" type="date">
+                    </div>
+                </div>
+                <div class="col-lg-3 mb-3" id="11">
+                    <label class="form-label">Eleven Date</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <span class="feather feather-calendar"></span>
+                            </div>
+                        </div>
+                        <input class="form-control" placeholder="MM/DD/YYYY" name="eleven_DeadLine" type="date">
+                    </div>
+                </div>
+                <div class="col-lg-3 mb-3" id="12">
+                    <label class="form-label">Twelve Date</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <span class="feather feather-calendar"></span>
+                            </div>
+                        </div>
+                        <input class="form-control" placeholder="MM/DD/YYYY" name="twelve_DeadLine" type="date">
+                    </div>
+                </div>
+                <div class="col-lg-3 mb-3" id="13">
+                    <label class="form-label">Thirteen Date</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <span class="feather feather-calendar"></span>
+                            </div>
+                        </div>
+                        <input class="form-control" placeholder="MM/DD/YYYY" name="thirteen_DeadLine"
+                            type="date">
+                    </div>
+                </div>
+                <div class="col-lg-3 mb-3" id="14">
+                    <label class="form-label">Fourteen Date</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <span class="feather feather-calendar"></span>
+                            </div>
+                        </div>
+                        <input class="form-control" placeholder="MM/DD/YYYY" name="fourteen_DeadLine"
+                            type="date">
+                    </div>
+                </div>
+                <div class="col-lg-3 mb-3" id="15">
+                    <label class="form-label">Fifteen Date</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <span class="feather feather-calendar"></span>
+                            </div>
+                        </div>
+                        <input class="form-control" placeholder="MM/DD/YYYY" name="fifteen_DeadLine" type="date">
+                    </div>
+                </div>
+                <div class="col-lg-3 mb-3 mt-5">
+                    <button class="btn btn-secondary" id="addNewDraft">
+                        Add Draft
+                    </button>
                 </div>
             </div>
 
@@ -268,11 +426,22 @@
         </form>
     </div>
 </div>
-
-
 <script>
     $(document).ready(function() {
-
+        for (var i = 3; i <= 15; i++) {
+            $('#' + i).hide();
+        }
+        var totalVal = 3;
+        $('#addNewDraft').click(function(e) {
+            e.preventDefault();
+            totalVal++;
+            $('#' + totalVal).show();
+            if (totalVal === 15) {
+                $('#addNewDraft').hide();
+            }
+        });
+    });
+    $(document).ready(function() {
         const searchOrderID = '{{ route('Get.Clients') }}';
         $('#myTypeahead').autocomplete({
             source: function(request, response) {

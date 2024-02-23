@@ -24,14 +24,10 @@ class DevelopmentOrderCreate extends Component
     }
     public function render(Request $request)
     {
-
         $Order_Websites = $this->pre_Villages->getOrderWebsites();
-
-
         $Currencies = Cache::rememberForever('currencies', function () {
             return OrderCurrencies::get();
         });
-
         $Countries = Cache::rememberForever('countries', function () {
             return OrderCountry::get();
         });

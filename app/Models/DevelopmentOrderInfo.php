@@ -15,10 +15,9 @@ class DevelopmentOrderInfo extends Model
         'project_title',
         'project_service',
         'order_status',
+        'website_order',
         'order_id',
     ];
-
-
 
     public function createdAt(): Attribute
     {

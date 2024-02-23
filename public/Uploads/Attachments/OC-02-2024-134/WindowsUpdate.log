@@ -1,0 +1,57 @@
+2022-04-14	07:24:35:061	 908	2a8	Misc	===========  Logging initialized (build: 7.3.7600.16385, tz: -0700)  ===========
+2022-04-14	07:24:35:139	 908	2a8	Misc	  = Process: C:\Windows\system32\svchost.exe
+2022-04-14	07:24:35:217	 908	2a8	Misc	  = Module: c:\windows\system32\wuaueng.dll
+2022-04-14	07:24:35:046	 908	2a8	Service	*************
+2022-04-14	07:24:35:529	 908	2a8	Service	** START **  Service: Service startup
+2022-04-14	07:24:35:607	 908	2a8	Service	*********
+2022-04-14	07:24:36:559	 908	2a8	Agent	  * WU client version 7.3.7600.16385
+2022-04-14	07:24:36:637	 908	2a8	Agent	  * Base directory: C:\Windows\SoftwareDistribution
+2022-04-14	07:24:36:762	 908	2a8	Agent	  * Access type: No proxy
+2022-04-14	07:24:36:824	 908	2a8	Agent	  * Network state: Disconnected
+2022-04-14	07:24:38:431	 908	2a8	DtaStor	Default service for AU is {00000000-0000-0000-0000-000000000000}
+2022-04-14	07:24:38:478	 908	2a8	DtaStor	Default service for AU is {9482F4B4-E343-43B6-B170-9A65BC822C77}
+2022-04-14	07:24:38:634	 908	2a8	Agent	WARNING: Failed to read the service id for re-registration 0x80070002
+2022-04-14	07:24:38:634	 908	2a8	Agent	WARNING: Missing service entry in the backup data store; cleaning up
+2022-04-14	07:25:20:395	 908	2a8	AU	AU initiates service shutdown
+2022-04-14	07:25:20:520	 908	2a8	Report	CWERReporter::Init succeeded
+2022-04-14	07:25:20:520	 908	2a8	Agent	Created new random SusClientId b310d0fc-ee68-4160-93bc-b6e34ff993af. Old Id: none.
+2022-04-14	07:25:20:520	 908	2a8	Report	***********  Report: Initializing static reporting data  ***********
+2022-04-14	07:25:20:520	 908	2a8	Report	  * OS Version = 6.1.7600.0.0.65792
+2022-04-14	07:25:20:520	 908	2a8	Report	  * OS Product Type = 0x00000001
+2022-04-14	07:25:20:894	 908	2a8	Report	  * Computer Brand = Hewlett-Packard
+2022-04-14	07:25:20:894	 908	2a8	Report	  * Computer Model = HP Compaq Pro 6305 SFF
+2022-04-14	07:25:20:910	 908	2a8	Report	  * Bios Revision = K06 v02.57
+2022-04-14	07:25:20:910	 908	2a8	Report	  * Bios Name = Default System BIOS
+2022-04-14	07:25:20:910	 908	2a8	Report	  * Bios Release Date = 2013-08-16T00:00:00
+2022-04-14	07:25:20:910	 908	2a8	Report	  * Locale ID = 1033
+2022-04-14	07:25:20:941	 908	2a8	AU	###########  AU: Uninitializing Automatic Updates  ###########
+2022-04-14	07:25:21:160	 908	2a8	Report	CWERReporter finishing event handling. (00000000)
+2022-04-14	07:25:21:222	 908	2a8	Service	*********
+2022-04-14	07:25:21:222	 908	2a8	Service	**  END  **  Service: Service exit [Exit code = 0x240001]
+2022-04-14	07:25:21:222	 908	2a8	Service	*************
+2022-04-14	07:32:12:238	 824	96c	Misc	===========  Logging initialized (build: 7.3.7600.16385, tz: -0700)  ===========
+2022-04-14	07:32:12:253	 824	96c	Misc	  = Process: C:\Windows\system32\svchost.exe
+2022-04-14	07:32:12:253	 824	96c	Misc	  = Module: c:\windows\system32\wuaueng.dll
+2022-04-14	07:32:12:222	 824	96c	Service	*************
+2022-04-14	07:32:12:253	 824	96c	Service	** START **  Service: Service startup
+2022-04-14	07:32:12:253	 824	96c	Service	*********
+2022-04-14	07:32:12:472	 824	96c	Agent	  * WU client version 7.3.7600.16385
+2022-04-14	07:32:12:472	 824	96c	Agent	  * Base directory: C:\Windows\SoftwareDistribution
+2022-04-14	07:32:12:472	 824	96c	Agent	  * Access type: No proxy
+2022-04-14	07:32:12:472	 824	96c	Agent	  * Network state: Disconnected
+2022-04-14	07:33:00:054	 824	96c	AU	AU initiates service shutdown
+2022-04-14	07:33:00:116	 824	96c	Report	CWERReporter::Init succeeded
+2022-04-14	07:33:00:116	 824	96c	Report	***********  Report: Initializing static reporting data  ***********
+2022-04-14	07:33:00:116	 824	96c	Report	  * OS Version = 6.1.7600.0.0.65792
+2022-04-14	07:33:00:116	 824	96c	Report	  * OS Product Type = 0x00000001
+2022-04-14	07:33:00:194	 824	96c	Report	  * Computer Brand = Hewlett-Packard
+2022-04-14	07:33:00:194	 824	96c	Report	  * Computer Model = HP Compaq Pro 6305 SFF
+2022-04-14	07:33:00:210	 824	96c	Report	  * Bios Revision = K06 v02.57
+2022-04-14	07:33:00:210	 824	96c	Report	  * Bios Name = Default System BIOS
+2022-04-14	07:33:00:210	 824	96c	Report	  * Bios Release Date = 2013-08-16T00:00:00
+2022-04-14	07:33:00:210	 824	96c	Report	  * Locale ID = 1033
+2022-04-14	07:33:00:225	 824	96c	AU	###########  AU: Uninitializing Automatic Updates  ###########
+2022-04-14	07:33:00:241	 824	96c	Report	CWERReporter finishing event handling. (00000000)
+2022-04-14	07:33:00:288	 824	96c	Service	*********
+2022-04-14	07:33:00:288	 824	96c	Service	**  END  **  Service: Service exit [Exit code = 0x240001]
+2022-04-14	07:33:00:288	 824	96c	Service	*************

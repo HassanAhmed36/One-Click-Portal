@@ -72,7 +72,6 @@ class Dashboard extends Component
                 ->whereDate('order_submission_infos.DeadLine', $todayDate)
                 ->select('order_client_infos.Client_Name', 'order_infos.Order_ID', 'order_submission_infos.DeadLine', 'content_basic_infos.Order_Status', 'order_infos.Order_Type', 'content_basic_infos.Word_Count')
                 ->get();
-
             $Deadline_Today_D =   OrderInfo::where('order_infos.Order_Type', 3)
                 ->join('design_order_infos', 'design_order_infos.order_id', '=', 'order_infos.id')
                 ->join('order_client_infos', 'order_client_infos.id', '=', 'order_infos.client_id')
@@ -81,6 +80,15 @@ class Dashboard extends Component
                 ->where('design_order_infos.Order_Status', '!=', '1')
                 ->whereDate('order_submission_infos.DeadLine', $todayDate)
                 ->select('order_client_infos.Client_Name', 'order_infos.Order_ID', 'order_submission_infos.DeadLine', 'design_order_infos.Order_Status', 'order_infos.Order_Type',)
+                ->get();
+            $Deadline_Today_Development =   OrderInfo::where('order_infos.Order_Type', 4)
+                ->join('development_order_infos', 'development_order_infos.order_id', '=', 'order_infos.id')
+                ->join('order_client_infos', 'order_client_infos.id', '=', 'order_infos.client_id')
+                ->join('order_submission_infos', 'order_submission_infos.order_id', '=', 'order_infos.id')
+                ->where('development_order_infos.Order_Status', '!=', '2')
+                ->where('development_order_infos.Order_Status', '!=', '1')
+                ->whereDate('order_submission_infos.DeadLine', $todayDate)
+                ->select('order_client_infos.Client_Name', 'order_infos.Order_ID', 'order_submission_infos.DeadLine', 'development_order_infos.Order_Status', 'order_infos.Order_Type',)
                 ->get();
 
             $Deadline_Today_R =   OrderInfo::where('order_infos.Order_Type', 1)
@@ -97,6 +105,7 @@ class Dashboard extends Component
                 $Deadline_Today_C->toArray(),
                 $Deadline_Today_R->toArray(),
                 $Deadline_Today_D->toArray(),
+                $Deadline_Today_Development->toArray()
             );
 
             $draftLetters = ['F', 'S', 'T', 'Four', 'Fifth', 'Sixth', 'Seven', 'Eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen'];
@@ -147,7 +156,23 @@ class Dashboard extends Component
                     ->select('order_client_infos.Client_Name', 'order_infos.Order_ID', "order_submission_infos.{$draftLetter}_DeadLine", 'design_order_infos.Order_Status', 'order_infos.Order_Type')
                     ->get();
 
-                $OrdersToday = array_merge($OrdersToday, $Draft_DeadLines_Today_C->toArray(), $F_DeadLines_Today_R->toArray(), $F_DeadLines_Today_D->toArray());
+                $F_DeadLines_Today_Development = OrderInfo::where('order_infos.Order_Type', 4)
+                    ->join('development_order_infos', 'development_order_infos.order_id', '=', 'order_infos.id')
+                    ->join('order_client_infos', 'order_client_infos.id', '=', 'order_infos.client_id')
+                    ->join('order_submission_infos', 'order_submission_infos.order_id', '=', 'order_infos.id')
+                    ->leftJoin('draft_submission', function ($join) use ($counter) {
+                        $join->on('draft_submission.order_id', '=', 'order_infos.id')
+                            ->where('draft_submission.draft_number', '=', $counter);
+                    })
+                    ->whereDate("order_submission_infos.{$draftLetter}_DeadLine", $todayDate)
+                    ->where('development_order_infos.Order_Status', '!=', '2')
+                    ->whereNotNull("order_submission_infos.{$draftLetter}_DeadLine")
+                    ->whereNull('draft_submission.id')
+                    ->select('order_client_infos.Client_Name', 'order_infos.Order_ID', "order_submission_infos.{$draftLetter}_DeadLine", 'development_order_infos.Order_Status', 'order_infos.Order_Type')
+                    ->get();
+
+
+                $OrdersToday = array_merge($OrdersToday, $Draft_DeadLines_Today_C->toArray(), $F_DeadLines_Today_R->toArray(), $F_DeadLines_Today_D->toArray(), $F_DeadLines_Today_Development->toArray());
                 $counter++;
             }
             $Deadline_Tomorrow_C =   OrderInfo::where('order_infos.Order_Type', 2)
@@ -178,10 +203,20 @@ class Dashboard extends Component
                 ->whereDate('order_submission_infos.DeadLine', $tomorrowDate)
                 ->select('order_client_infos.Client_Name', 'order_infos.Order_ID', 'order_submission_infos.DeadLine', 'design_order_infos.Order_Status', 'order_infos.Order_Type',)
                 ->get();
+            $Deadline_Tomorrow_Development =  OrderInfo::where('order_infos.Order_Type', 4)
+                ->join('development_order_infos', 'development_order_infos.order_id', '=', 'order_infos.id')
+                ->join('order_client_infos', 'order_client_infos.id', '=', 'order_infos.client_id')
+                ->join('order_submission_infos', 'order_submission_infos.order_id', '=', 'order_infos.id')
+                ->where('development_order_infos.Order_Status', '!=', '2')
+                ->where('development_order_infos.Order_Status', '!=', '1')
+                ->whereDate('order_submission_infos.DeadLine', $tomorrowDate)
+                ->select('order_client_infos.Client_Name', 'order_infos.Order_ID', 'order_submission_infos.DeadLine', 'development_order_infos.Order_Status', 'order_infos.Order_Type',)
+                ->get();
             $OrdersTomorrow = array_merge(
                 $Deadline_Tomorrow_C->toArray(),
                 $Deadline_Tomorrow_R->toArray(),
-                $Deadline_Tomorrow_D->toArray()
+                $Deadline_Tomorrow_D->toArray(),
+                $Deadline_Tomorrow_Development->toArray()
             );
             $counter1 = 1;
             foreach ($draftLetters as $draftLetter) {
@@ -230,7 +265,28 @@ class Dashboard extends Component
                     ->whereNull('draft_submission.id')
                     ->select('order_client_infos.Client_Name', 'order_infos.Order_ID', "order_submission_infos.{$draftLetter}_DeadLine", 'design_order_infos.Order_Status', 'order_infos.Order_Type')
                     ->get();
-                $OrdersTomorrow = array_merge($OrdersTomorrow, $Draft_DeadLines_Tomorrow_C->toArray(), $F_DeadLines_Tomorrow_R->toArray(), $F_DeadLines_Tommorow_D->toArray());
+
+                $F_DeadLines_Tomorrow_Development = OrderInfo::where('order_infos.Order_Type', 4)
+                    ->join('development_order_infos', 'development_order_infos.order_id', '=', 'order_infos.id')
+                    ->join('order_client_infos', 'order_client_infos.id', '=', 'order_infos.client_id')
+                    ->join('order_submission_infos', 'order_submission_infos.order_id', '=', 'order_infos.id')
+                    ->leftJoin('draft_submission', function ($join) use ($counter) {
+                        $join->on('draft_submission.order_id', '=', 'order_infos.id')
+                            ->where('draft_submission.draft_number', '=', $counter);
+                    })
+                    ->whereDate("order_submission_infos.{$draftLetter}_DeadLine", $tomorrowDate)
+                    ->where('development_order_infos.Order_Status', '!=', '2')
+                    ->whereNotNull("order_submission_infos.{$draftLetter}_DeadLine")
+                    ->whereNull('draft_submission.id')
+                    ->select('order_client_infos.Client_Name', 'order_infos.Order_ID', "order_submission_infos.{$draftLetter}_DeadLine", 'development_order_infos.Order_Status', 'order_infos.Order_Type')
+                    ->get();
+                $OrdersTomorrow = array_merge(
+                    $OrdersTomorrow,
+                    $Draft_DeadLines_Tomorrow_C->toArray(),
+                    $F_DeadLines_Tomorrow_R->toArray(),
+                    $F_DeadLines_Tommorow_D->toArray(),
+                    $F_DeadLines_Tomorrow_Development->toArray()
+                );
                 $counter1++;
             }
 
@@ -763,9 +819,7 @@ class Dashboard extends Component
                     ->get()
                     ->toArray();
 
-                // Merge the data from tomorrow's drafts into $graphic_tomorrow
                 $graphic_tomorrow = array_merge($graphic_tomorrow, $designing_drafts_tomorrow);
-
                 $counter_design_tomorrow++;
             }
             $graphic_past = [];
@@ -791,7 +845,6 @@ class Dashboard extends Component
         $lastAttendanceID = Attendance::whereDate('created_at', $today->format('Y-m-d'))->where('user_id', $auth_user->id)
             ->first();
         $Leave_Quota = UserLeaveQuota::where('user_id', $auth_user->id)->first();
-        $Get_Notice = NoticeBoard::latest('id')->get();
         return view('livewire.dashboard', compact(
             'ContentAllPrevious',
             'ContentAllTowmorrow',
@@ -809,7 +862,6 @@ class Dashboard extends Component
             'Final_DeadLines',
             'deadline_times',
             'statusCountsFlat',
-            'auth_user',
             'empCount',
             'lastAttendanceID',
             'Leave_Quota',

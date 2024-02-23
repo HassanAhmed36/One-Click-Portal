@@ -363,9 +363,7 @@ class OrdersService
 
     public function getNewOrderID(): string
     {
-        $month = Carbon::now()->month; // Assuming September (you can change this as needed)
-        // $month = 6; // Assuming September (you can change this as needed)
-
+        $month = Carbon::now()->month; 
         $lastOrder = OrderInfo::withTrashed()
             ->whereMonth('created_at', $month)
             ->orderBy('created_at', 'desc')
@@ -375,12 +373,9 @@ class OrdersService
 
         preg_match('/\d+$/', $lastOrderId, $matches);
         $numericPart = $matches[0] ?? 0;
-
         $currentYear = Carbon::now()->year;
-
         return 'OC-' . str_pad($month, 2, '0', STR_PAD_LEFT) . '-' . $currentYear . '-' . str_pad($numericPart + 1, 3, '0', STR_PAD_LEFT);
     }
-
 
     public function getNewClientID(): string
     {

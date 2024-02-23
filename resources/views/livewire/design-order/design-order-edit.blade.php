@@ -328,7 +328,6 @@
                             value="{{ $DesignOrder->submission_info->T_DeadLine }}">
                     </div>
                 </div>
-
                 <div class="col-lg-3 mb-3" id="4">
                     <label class="form-label">Fourth Date</label>
                     <div class="input-group">
