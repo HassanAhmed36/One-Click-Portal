@@ -65,27 +65,43 @@ class ReasearchOrdersList extends Component
 
             ])->get();
         }
-        if ($request->has('date') && $request->has('draft_name')) {
-            $Research_Orders = OrderInfo::with([
-                'authorized_user',
-                'assign',
-                'client_info',
-                'basic_info',
-                'content_info',
-                'submission_info' => function ($q) use ($request) {
-                    $q->whereDate($request->draft_name, $request->date)->orderByDesc($request->draft_name);
-                },
-                'deadlines',
-                'reference_info',
-                'order_desc',
-                'payment_info',
-                'attachments',
-                'revision',
-                'tasks',
-                'final_submission',
-            ])->whereHas('submission_info', function ($q) use ($request) {
-                $q->whereDate($request->draft_name, $request->date)->orderByDesc($request->draft_name);
-            })->where('Order_Type', 1)->get();
+        if ($request->has('date')) {
+
+            $Research_Orders = [];
+            $Deadline_Today_R =   OrderInfo::where('order_infos.Order_Type', 1)
+                ->join('order_client_infos', 'order_client_infos.id', '=', 'order_infos.client_id')
+                ->join('order_basic_infos', 'order_basic_infos.order_id', '=', 'order_infos.id')
+                ->join('order_submission_infos', 'order_submission_infos.order_id', '=', 'order_infos.id')
+                ->join('order_assigning_infos', 'order_assigning_infos.order_id', '=', 'order_infos.id')
+                ->join('user_basic_infos', 'user_basic_infos.user_id',  '=', 'order_assigning_infos.assign_id')
+                ->where('order_basic_infos.Order_Status', '!=', '2')
+                ->where('order_basic_infos.Order_Status', '!=', '1')
+                ->whereDate('order_submission_infos.DeadLine', $request->date)
+                ->select('user_basic_infos.F_Name', 'user_basic_infos.L_Name', 'order_client_infos.Client_Name', 'order_infos.Order_ID', 'order_submission_infos.DeadLine', 'order_basic_infos.Order_Status', 'order_infos.Order_Type', 'order_basic_infos.Word_Count', 'order_assigning_infos.assign_id')
+                ->get();
+            $Research_Orders = $Deadline_Today_R->toArray();
+            $draftLetters = ['F', 'S', 'T', 'Four', 'Fifth', 'Sixth', 'Seven', 'Eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen'];
+            $counter_manager_1 = 1;
+            foreach ($draftLetters as $draftLetter) {
+                $Drafts_Today_R = OrderInfo::with('assign')->where('order_infos.Order_Type', 1)
+                    ->join('order_basic_infos', 'order_basic_infos.order_id', '=', 'order_infos.id')
+                    ->join('order_client_infos', 'order_client_infos.id', '=', 'order_infos.client_id')
+                    ->join('order_submission_infos', 'order_submission_infos.order_id', '=', 'order_infos.id')
+                    ->join('order_assigning_infos', 'order_assigning_infos.order_id', '=', 'order_infos.id')
+                    ->join('user_basic_infos', 'user_basic_infos.user_id',  '=', 'order_assigning_infos.assign_id')
+                    ->leftJoin('draft_submission', function ($join) use ($counter_manager_1) {
+                        $join->on('draft_submission.order_id', '=', 'order_infos.id')
+                            ->where('draft_submission.draft_number', '=', $counter_manager_1);
+                    })
+                    ->whereDate("order_submission_infos.{$draftLetter}_DeadLine", $request->date)
+                    ->whereNotNull("order_submission_infos.{$draftLetter}_DeadLine")
+                    ->whereNull('draft_submission.id')
+                    ->where('order_basic_infos.Order_Status', '!=', '2')
+                    ->select('user_basic_infos.F_Name', 'user_basic_infos.L_Name', 'order_client_infos.Client_Name', 'order_infos.Order_ID', "order_submission_infos.{$draftLetter}_DeadLine", 'order_basic_infos.Order_Status', 'order_infos.Order_Type', 'order_basic_infos.Word_Count', 'order_assigning_infos.assign_id')
+                    ->get();
+                $Research_Orders = array_merge($Research_Orders, $Drafts_Today_R->toArray());
+                $counter_manager_1++;
+            }
         }
 
         return view('livewire.research.reasearch-orders-list', compact('IndependentWriterOrder', 'Research_Orders', 'auth_user', 'unAssignedOrder'))->layout('layouts.authorized');
