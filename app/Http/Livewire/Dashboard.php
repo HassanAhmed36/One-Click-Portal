@@ -946,8 +946,9 @@ class Dashboard extends Component
         $Role_ID = (int)$auth_user->Role_ID;
         $statusCountsFlat = $this->orderService->getOrderCounts();
         $empCount = User::count();
-         $lastAttendanceID = Attendance::where('user_id', $auth_user->id)->latest()
-            ->first();
+        $lastAttendanceID = Attendance::OrderByDesc('id')->where('user_id', $auth_user->id)->first();
+         
+         
         // $lastAttendanceID = Attendance::whereDate('created_at', $today->format('Y-m-d'))->where('user_id', $auth_user->id)
             // ->first();
         $Leave_Quota = UserLeaveQuota::where('user_id', $auth_user->id)->first();

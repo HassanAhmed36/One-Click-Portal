@@ -10,14 +10,14 @@
                         <th class="wd-15p border-bottom-0">S.No</th>
                         <th class="wd-15p border-bottom-0">Order ID</th>
                         <th class="wd-15p border-bottom-0">Status</th>
-                       @if ((int) $auth_user->Role_ID !=4)
+                       @if ((int) $auth_user->Role_ID != 3)
                             <th class="wd-15p border-bottom-0">Client Name</th>
                         @endif
+                        @if($auth_user->Role_ID != 3)
                         <th class="wd-20p border-bottom-0">Created & Assign</th>
-
+                        @endif
                         <th class="wd-10p border-bottom-0">Order From</th>
-                        <th class="wd-25p border-bottom-0">Order Info</th>
-                       @if ((int) $auth_user->Role_ID !=4)
+                       @if ((int) $auth_user->Role_ID != 3)
                             <th class="wd-25p border-bottom-0">Order Price</th>
                         @endif
                         <th class="wd-25p border-bottom-0">Deadline</th>
@@ -53,12 +53,14 @@
                                 <strong class="badge badge-{{ $class }} mt-2">
                                     {{ $status }}</strong> <br>
                             </td>
-                           @if ((int) $auth_user->Role_ID !=4)
+                           @if ((int) $auth_user->Role_ID != 3)
                                 <td>{{ $Order->client_info->Client_Name }}</td>
                             @endif
+                            @if($auth_user->Role_ID != 3)
                             <td>
                                 <strong>Created By:</strong>
                                 {{ isset($Order->authorized_user) && $Order->authorized_user->basic_info ? $Order->authorized_user->basic_info->full_name : '' }}
+                               
                                 <br>
                                 @if($auth_user->Role_ID == 20 || $auth_user->Role_ID == 1)
                                 @forelse($Order->assign as $User)
@@ -68,8 +70,10 @@
                                     <strong class="text-danger"> Not Assign</strong> <br>
                                 @endforelse
                             @endif
+                           
                                 <strong>Created At:</strong> {{ $Order->created_at }}
                             </td>
+                            @endif
                             <td>
                                 <strong>Service:</strong>
                                 @if ($Order->development_info)
@@ -78,11 +82,8 @@
                                 <br>
 
                             </td>
-                            <td>
-                                <strong>Source File:</strong>
-                                {{ $Order->development_info->source_file }}
-                            </td>
-                           @if ((int) $auth_user->Role_ID !=4)
+                            
+                           @if ((int) $auth_user->Role_ID != 3)
                                 <td>
                                     <strong>Status:</strong> {!! PortalHelpers::visualizeRecordStatus($Order->payment_info->Payment_Status) !!}
                                 </td>

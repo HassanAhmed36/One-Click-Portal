@@ -21,13 +21,13 @@ class UserPortalNotifications extends Component
 
               $route = '';
               
-                if (PortalHelpers::getOrderType($data['Order_ID']) === 1) {
+                if (PortalHelpers::getOrderType($data['Order_ID']) == 1) {
                     $route = route('Order.Details', ['Order_ID' => $data['Order_ID']]);
-                } elseif (PortalHelpers::getOrderType($data['Order_ID']) === 2) {
+                } elseif (PortalHelpers::getOrderType($data['Order_ID']) == 2) {
                     $route = route('Content.Order.Details', ['Order_ID' => $data['Order_ID']]);
-                } elseif (PortalHelpers::getOrderType($data['Order_ID']) === 3) {
+                } elseif (PortalHelpers::getOrderType($data['Order_ID']) == 3) {
                     $route = route('Design.Order.View', ['Order_ID' => $data['Order_ID']]);
-                } elseif (PortalHelpers::getOrderType($data['Order_ID']) === 4) {
+                } elseif (PortalHelpers::getOrderType($data['Order_ID']) == 4) {
                     $route = route('Development.Order.View', ['Order_ID' => $data['Order_ID']]);
                 } elseif ($data['Order_ID'] == "leave_request") {
                     $route = route('Received.Request');

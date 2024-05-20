@@ -18,54 +18,51 @@ class MarkHoliday extends Component
         return view('livewire.holiday.mark-holiday',compact('Holidays'))->layout('layouts.authorized');
 
     }
-    public function markHoliday(Request $request) {
-        $date = $request->date;
-        $name = $request->name;
-        
+    
+   public function markHoliday(Request $request) {
+       
+   
+   
+   $request->validate([
+        'date' => 'required', 
+        'name' => 'required', 
+    ]);
 
-        $users = User::with(['attendance' => function ($query) use ($date) {
-            $query->whereDate('created_at', $date);
-        }])->get();
 
-        $attendanceToUpdate = [];
-        $attendanceToCreate = [];
+    $date = $request->date;
+    $name = $request->name;
 
-        foreach ($users as $user) {
-            if ($user->attendance->isEmpty()) {
-                $attendanceToCreate[] = [
-                    'user_id' => $user->id,
-                    'status' => 8,
-                    'created_at' => $date,
-                    'ip_address' => null
-                ];
-            } else {
-                $attendanceToUpdate[] = [
-                    'user_id' => $user->id,
-                    'created_at' => $date,
-                    'ip_address' => null
-                ];
-            }
-        }
-
-        foreach ($attendanceToUpdate as $attendanceData) {
-            Attendance::updateOrCreate(
-                ['user_id' => $attendanceData['user_id'], 'created_at' => $attendanceData['created_at']],
-                ['check_in' => null, 'check_out' => null, 'status' => 8, 'ip_address' => $attendanceData['ip_address']]
-            );
-        }
-
-        foreach ($attendanceToCreate as $attendanceData) {
-            Attendance::create($attendanceData);
-        }
-
-        Holiday::create([
-            'name' => $name,
-            'date' => $date
-        ]);
-
-        return redirect()->back()->with('Success!', 'Holiday has been marked successfully');
+    if (Holiday::where('date', $date)->exists()) {
+        return redirect()->back()->with('error', 'A holiday already exists for the selected date');
     }
 
+    $existingAttendances = Attendance::whereDate('created_at', $date)->get();
+
+    if ($existingAttendances->isNotEmpty()) {
+        foreach ($existingAttendances as $attendance) {
+            $attendance->update(['status' => 8]);
+        }
+    } else {
+        $users = User::all();
+        foreach ($users as $user) {
+            Attendance::create([
+                'user_id' => $user->id,
+                'status' => 8,
+                'created_at' => $date,
+                'ip_address' => null,
+                'check_in' => null,
+                'check_out' => null
+            ]);
+        }
+    }
+
+    Holiday::create([
+        'name' => $name,
+        'date' => $date
+    ]);
+
+    return redirect()->back()->with('Success!', 'Holiday has been marked successfully');
+}
 
 
 

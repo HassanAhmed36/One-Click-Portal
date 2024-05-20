@@ -36,7 +36,6 @@ class ResearchOrderService
                                 $q->select('id', 'F_Name', 'L_Name', 'user_id');
                             }
                         ])->withTrashed();
-                        
                     },
                     'tasks' => function ($q) use ($User_ID) {
                         $q->with([
@@ -64,6 +63,9 @@ class ResearchOrderService
                                         ]);
                                     }
                                 ]);
+                            },
+                            'assign_dead_lines' => function ($q) use ($User_ID) {
+                                $q->with('User.basic_info')->where('user_id', $User_ID);
                             },
                             'revision'
                         ])->where('assign_id', $User_ID);
@@ -126,6 +128,9 @@ class ResearchOrderService
                             },
                             'revision'
                         ])->where('assign_by', $User_ID);
+                    },
+                    'assign_dead_lines' => function ($q) use ($User_ID) {
+                        $q->with('User.basic_info')->where('user_id', $User_ID);
                     }
                 ])->firstOrFail();
         }
@@ -184,6 +189,9 @@ class ResearchOrderService
                         },
                         'revision'
                     ]);
+                },
+                'assign_dead_lines' => function ($q) {
+                    $q->with('User.basic_info');
                 }
             ])->firstOrFail();
     }
@@ -301,7 +309,7 @@ class ResearchOrderService
                 $query->orWhereHas('submission_info', function ($q) use ($column, $deadlineDate) {
                     $q->orWhereDate($column, '<', $deadlineDate);
                 });
-            } elseif ($flag === false){
+            } elseif ($flag === false) {
                 $query->orWhereHas('submission_info', function ($q) use ($column, $deadlineDate) {
                     $q->orWhereDate($column, '=', $deadlineDate);
                 });
@@ -331,7 +339,7 @@ class ResearchOrderService
                 ->where('assign_id', $User_ID);
             if ($flag === true) {
                 $query->whereDate('DeadLine', '<', $deadlineDate);
-            } else if($flag === false) {
+            } else if ($flag === false) {
                 $query->whereDate('DeadLine', '=', $deadlineDate);
             } else {
                 $query->whereDate('DeadLine', '>', $deadlineDate);
@@ -435,5 +443,4 @@ class ResearchOrderService
         $Order = OrderInfo::withTrashed()->find($request->Order_ID);
         $Order->forceDelete();
     }
-
 }

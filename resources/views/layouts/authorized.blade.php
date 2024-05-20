@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="ltr">
 @php
-$currentUser = \Illuminate\Support\Facades\Auth::guard('Authorized')->user();
+    $currentUser = \Illuminate\Support\Facades\Auth::guard('Authorized')->user();
 @endphp
 
 <head>
@@ -41,14 +41,14 @@ $currentUser = \Illuminate\Support\Facades\Auth::guard('Authorized')->user();
         <div class="page-main">
             @include('partials.layouts.side-bar', ['currentUser' => $currentUser])
             <div class="app-content main-content">
-                <div class="side-app">
+                <div class="side-app"  style="background:url({{asset('assets/images/images/photos/login1.jpg')}})">
                     @include('partials.layouts.app-header', ['currentUser' => $currentUser])
                     {{ $slot }}
                 </div>
             </div><!-- end app-content-->
         </div>
         @php
-        $currentYear = date('Y');
+            $currentYear = date('Y');
         @endphp
         <!--Footer-->
         <footer class="footer">
@@ -56,7 +56,7 @@ $currentUser = \Illuminate\Support\Facades\Auth::guard('Authorized')->user();
                 <div class="row align-items-center flex-row-reverse">
                     <div class="col-md-12 col-sm-12 mt-3 mt-lg-0 text-center">
                         Copyright © 2023 @if ($currentYear > 2023)
-                        - {{ $currentYear }}
+                            - {{ $currentYear }}
                         @endif
                         <a href="{{ route('Main.Dashboard') }}">1Click</a>. Designed
                         {{-- with <span class="fa fa-heart text-danger"></span> --}}
@@ -118,6 +118,89 @@ $currentUser = \Illuminate\Support\Facades\Auth::guard('Authorized')->user();
     @include('partials.scripts')
     @include('partials.custom-scripts')
 
-   
+    @if (session('interval') === 'true')
+        <script>
+            function checkForActiveNotices() {
+                const current = new Date();
+                console.log("if part is running : chek for notice: " + current.toLocaleTimeString());
+
+                $.ajax({
+                    url: '{{ route('check.active.notices') }}',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        submitbtn: 'show',
+                    },
+                    success: function(response) {
+
+                        if (response.success && response.noticeDetail) {
+
+                            const current1 = new Date();
+                            console.log("notice available: " + current1.toLocaleTimeString());
+                            renderNoticeDetail(response.noticeDetail);
+                            timeLimit = parseInt(response.time_limit);
+                            hideClose(timeLimit);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+
+                function renderNoticeDetail(noticeDetail) {
+                    $('.noticeDetailContent').html(noticeDetail);
+                    $('.noticeDetailModal').modal('show');
+                }
+
+                function hideClose(timeLimit) {
+                    if (timeLimit > 0) {
+                        var $closeButton = $('.btn-close');
+                        $closeButton.hide();
+                        startTimer(timeLimit * 60);
+                    } else {
+                        $closeButton.fadeIn();
+                    }
+                }
+
+                function startTimer(totalSeconds) {
+                    var interval = setInterval(function() {
+                        if (totalSeconds <= 0) {
+                            var $closeButton = $('.btn-close');
+                            $closeButton.fadeIn();
+                            $('.timmerdisplay').text("");
+                        } else {
+                            var minutes = Math.floor(totalSeconds / 60);
+                            var seconds = totalSeconds % 60;
+                            var formattedTime = pad(minutes) + ":" + pad(seconds);
+                            $('#timerDisplay').text(formattedTime);
+                            totalSeconds--;
+                        }
+                    }, 1000);
+                }
+
+                function pad(val) {
+                    return val < 10 ? "0" + val : val;
+                }
+            }
+
+            setInterval(checkForActiveNotices, 30 * 1000);
+        </script>
+    @else
+        <script>
+            function check() {
+                const currentTime = new Date();
+                console.log("else part is running: " + currentTime.toLocaleTimeString());
+            }
+            setInterval(check, 30 * 1000);
+        </script>
+    @endif
+    <div class="modal fade noticeDetailModal" id="noticeDetailModal" tabindex="-1"
+        aria-labelledby="noticeDetailModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-lg noticeDetailContent" id="noticeDetailContent">
+            @include('livewire.notice.notice-detail')
+
+        </div>
+    </div>
 </body>
+
 </html>

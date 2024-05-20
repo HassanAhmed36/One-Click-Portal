@@ -76,5 +76,13 @@
 @endforelse
 
 <script>
-    $('.NotificationCount').html('{{ $notificationsCount }}');
+    $(document).ready(function() {
+        var oldCount = parseInt($('.NotificationCount').html());
+        var newCount = parseInt('{{ $notificationsCount }}');
+        $('.NotificationCount').html(newCount);
+        if (newCount > oldCount) {
+            var audio = new Audio('{{ asset("notification.mp3") }}');
+            audio.play();
+        }
+    });
 </script>

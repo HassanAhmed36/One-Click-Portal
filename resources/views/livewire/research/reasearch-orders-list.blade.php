@@ -1,15 +1,32 @@
 @if ((int) $auth_user->Role_ID === 1)
     {{-- Admin View --}}
     <div class="card mt-4">
-        <div class="card-header border-bottom-0 d-flex justify-content-between align-items-center">
+           <div class="card-header border-bottom-0 d-flex justify-content-between align-items-center">
             <div class="card-title">Research Orders List</div>
             <div class="d-flex align-items-center">
-                <div class="btn-group mt-2 mb-2 me-2">
-                    <form action="" method="GET" class="d-flex gap-2">
-                        <input type="date" name="date" class="form-control" value="{{ request('date') }}">
-                        <button class="btn btn-primary" type="submit">Submit</button>
-                    </form>
+                <form method="GET" action="" class="d-flex align-items-center">
+                <div class="btn-group mb-2 me-2 d-flex flex-column">
+                    <label for="selectBox" class="form-label">Writters:</label>
+                    <select class="form-select" id="selectBox" name="writer">
+                        <option value="All">All writers</option>
+                      @foreach($Writters as $w)
+                        <option value="{{$w->id}}" @selected($w->id == request('writer'))>{{$w->basic_info->FullName}}</option>
+                      @endforeach
+                    </select>
                 </div>
+                <div class="btn-group mb-2 me-2 d-flex flex-column">
+                        <label for="selectBox" class="form-label">Start Date</label>
+                        <input type="date" name="start_date" class="form-control" value="{{ request('start_date') }}">
+                </div>
+                <div class="btn-group mb-2 me-2 d-flex flex-column">
+                        <label for="selectBox" class="form-label">End Date</label>
+                        <input type="date" name="end_date" class="form-control" value="{{ request('end_date') }}">
+                </div>
+                <div class="btn-group mb-2 me-2 d-flex flex-column pt-2">
+                       <button type="submit" class="btn btn-primary">Apply Filters</button>
+                </div>
+                
+                </form>
                 <div class="btn-group mt-2 mb-2 me-2">
                     <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         Filters <span class="caret"></span>
@@ -114,14 +131,13 @@
                         </tbody>
                     </table>
                     
-                @elseif (request()->has('date'))
+                @elseif (request()->has('start_date'))
                 
                 <table class="table table-vcenter text-nowrap border-top dead-line-orders mb-0" id="responsive-datatable">
                         <thead>
                             <tr>
                                 <th class="wd-10p border-bottom-0">S.No</th>
                                 <th class="wd-10p border-bottom-0">Order Code</th>
-                               
                                 <th class="wd-10p border-bottom-0">Assign</th>
                                 <th class="wd-10p border-bottom-0">Client</th>
                                 <th class="w-15p border-bottom-0">Words Count</th>
@@ -131,9 +147,14 @@
                         </thead>
                         <tbody>
                           
+                                @php
+                                $order_words = 0; 
+                                
+                                @endphp
                             @forelse($Research_Orders as $Order)
-                            
-                               
+                                @php
+                                 $order_words += $Order['Word_Count'];
+                                @endphp
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>
@@ -238,6 +259,7 @@
                                         <td>Revision</td>
                                     @endif
                                 </tr>
+                                
                             @empty
                                 <tr>
                                     <td colspan="5">
@@ -249,9 +271,18 @@
                                     </td>
                                 </tr>
                             @endforelse
+                            
+                             <tr>
+                                    <td><b>Total Assign Words</b></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>{{ $order_words }}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                         </tbody>
-
-                        </tbody>
+    
                     </table>
                 
                 @else
@@ -411,15 +442,32 @@
     </div>
 @elseif((int) $auth_user->Role_ID === 4)
     <div class="card mt-4">
-        <div class="card-header border-bottom-0 d-flex justify-content-between align-items-center">
+         <div class="card-header border-bottom-0 d-flex justify-content-between align-items-center">
             <div class="card-title">Research Orders List</div>
             <div class="d-flex align-items-center">
-                <div class="btn-group mt-2 mb-2 me-2">
-                    <form action="" method="GET" class="d-flex gap-2">
-                        <input type="date" name="date" class="form-control" value="{{ request('date') }}">
-                        <button class="btn btn-primary" type="submit">Submit</button>
-                    </form>
+                <form method="GET" action="" class="d-flex align-items-center">
+                <div class="btn-group mb-2 me-2 d-flex flex-column">
+                    <label for="selectBox" class="form-label">Writters:</label>
+                    <select class="form-select" id="selectBox" name="writer">
+                        <option value="All">All writers</option>
+                      @foreach($Writters as $w)
+                        <option value="{{$w->id}}" @selected($w->id == request('writer'))>{{$w->basic_info->FullName}}</option>
+                      @endforeach
+                    </select>
                 </div>
+                <div class="btn-group mb-2 me-2 d-flex flex-column">
+                        <label for="selectBox" class="form-label">Start Date</label>
+                        <input type="date" name="start_date" class="form-control" value="{{ request('start_date') }}">
+                </div>
+                <div class="btn-group mb-2 me-2 d-flex flex-column">
+                        <label for="selectBox" class="form-label">End Date</label>
+                        <input type="date" name="end_date" class="form-control" value="{{ request('end_date') }}">
+                </div>
+                <div class="btn-group mb-2 me-2 d-flex flex-column pt-2">
+                       <button type="submit" class="btn btn-primary">Apply Filters</button>
+                </div>
+                
+                </form>
                 <div class="btn-group mt-2 mb-2 me-2">
                     <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         Filters <span class="caret"></span>
@@ -503,7 +551,7 @@
                             @endforelse
                         </tbody>
                     </table>
-                @elseif(request()->has('date'))
+                @elseif(request()->has('start_date'))
                     <table class="table table-vcenter text-nowrap border-top dead-line-orders mb-0" id="responsive-datatable">
                         <thead>
                             <tr>

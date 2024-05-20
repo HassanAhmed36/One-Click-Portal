@@ -1029,6 +1029,8 @@
                     </div>
                 </div>
             </div>
+            
+            @if(!in_array($auth_user->Role_ID , [10,11]))
             <div class="card">
                 <div class="card-header  border-0">
                     <div class="card-title">Assiging Information</div>
@@ -1071,6 +1073,7 @@
 
                 </div>
             </div>
+            @endif
             <div class="card">
                 <div class="card-header border-0">
                     <div class="card-title">Payment Detail</div>

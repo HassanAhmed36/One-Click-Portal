@@ -1,6 +1,5 @@
 @include('partials.research-order-custom-style')
 
-
 @php
     $assign = 0;
     $total_words = 0;
@@ -1078,46 +1077,7 @@
             </div>
         </div>
     </div>
-    <!-- Assign Modal -->
-    <div class="modal fade" id="AssignModal">
-        <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content">
-                <form action="{{ route('Assign.Order') }}" method="POST" class="needs-validation was-validated">
-                    @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title">Assign Order</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <input type="hidden" name="Order_ID" value="{{ $Order_ID }}">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-label" for="Assign_ID">Coordinators</label>
-                                    <select name="Assign_ID[]" id="Assign_ID" class="form-control select2"
-                                        data-placeholder="Select Coordinator" multiple required>
-                                        <option value="">Select Coordinator</option>
-                                        @forelse($AssignOrderArray as $writer)
-                                            <option value="{{ $writer->id }}">
-                                                {{ $writer->basic_info->full_name }}</option>
-                                        @empty
-                                            <option value="">No Coordinators/Writer available</option>
-                                        @endforelse
-                                    </select>
-                                </div>
 
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary btn-block">Assign Order</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
     <!-- New Task Modal -->
     <div class="modal fade" id="NewTaskModal">
         <div class="modal-dialog modal-lg" role="document">
@@ -1589,6 +1549,12 @@
                                                             data-bs-placement="top" title="Download"
                                                             target="_blank"><i
                                                                 class="feather feather-download   text-success"></i></a>
+
+                                                        @if ($auth_user->Role_ID === 9)
+                                                            <a href="{{ route('delete.attachment', ['id' => $attachment->id]) }}"
+                                                                class="action-btns1"><i
+                                                                    class="feather feather-trash   text-danger"></i></a>
+                                                        @endif
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1922,7 +1888,7 @@
                                             class="font-weight-semibold">{{ $Research_Order->basic_info->Citation_Style }}</span>
                                     </td>
                                 </tr>
-                                 <tr>
+                                <tr>
                                     <td>
                                         <span class="w-50">Preferred Language</span>
                                     </td>
@@ -2816,7 +2782,7 @@
                                             class="font-weight-semibold">{{ $Research_Order->basic_info->Citation_Style }}</span>
                                     </td>
                                 </tr>
-                                 <tr>
+                                <tr>
                                     <td>
                                         <span class="w-50">Preferred Language</span>
                                     </td>
@@ -3719,7 +3685,7 @@
                                             class="font-weight-semibold">{{ $Research_Order->basic_info->Citation_Style }}</span>
                                     </td>
                                 </tr>
-                                 <tr>
+                                <tr>
                                     <td>
                                         <span class="w-50">Preferred Language</span>
                                     </td>
@@ -3991,7 +3957,8 @@
 
                 </div>
             </div>
-            <div class="card">
+            
+             <div class="card">
                 <div class="card-header  border-0">
                     <div class="card-title">Research Department</div>
                 </div>
@@ -4004,8 +3971,7 @@
                                         <tr>
                                             <td>
                                                 <!--<span class="w-50">Coordinator {{ $loop->iteration }}</span>-->
-                                                <span
-                                                    class="w-50">{{ $User->designation->Designation_Name }}</span>
+                                                <span class="w-50">{{ $User->designation->Designation_Name }}</span>
                                             </td>
                                             <td>:</td>
                                             <td>
@@ -4015,6 +3981,247 @@
                                         </tr>
                                     @endforeach
                                 @endif
+                                @if (count($Research_Order->tasks) > 0)
+                                    @foreach ($Research_Order->tasks as $task)
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Task {{ $loop->iteration }} Assign To</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header  border-0">
+                    <div class="card-title">Research Department</div>
+                </div>
+                <div class="card-body pt-2 ps-3 pr-3">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                                @foreach ($Research_Order->assign_dead_lines as $deadline )
+                                    <tr>
+                                        <td>
+                                            <span class="w-50">Writer</span>
+                                        </td>
+                                        <td>:</td>
+                                        <td>
+                                            <span
+                                                class="font-weight-semibold text-danger">{{ $deadline->user->basic_info->FullName }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    @if (!empty($deadline->first_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">First Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $deadline->first_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($deadline->second_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Second Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $deadline->second_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($deadline->third_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Third Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $deadline->third_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($deadline->forth_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Fourth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $deadline->forth_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($deadline->fifth_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Fifth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $deadline->fifth_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($deadline->sixth_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Sixth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $deadline->sixth_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($deadline->seventh_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Seventh Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $deadline->seventh_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($deadline->eighth_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Eighth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $deadline->eighth_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($deadline->nineth_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Ninth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $deadline->nineth_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($deadline->tenth_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Tenth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $deadline->tenth_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($deadline->eleventh_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Eleventh Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $deadline->eleventh_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($deadline->twelveth_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Twelfth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $deadline->twelveth_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($deadline->thirteen_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Thirteenth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $deadline->thirteen_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($deadline->fourteen_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Fourteenth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $deadline->fourteen_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($deadline->fifteen_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Fifteenth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $deadline->fifteen_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    <tr>
+                                        <td>
+                                            <span class="w-50">Final Deadline</span>
+                                        </td>
+                                        <td>:</td>
+                                        <td>
+                                            <span
+                                                class="font-weight-semibold text-danger">{{ $deadline->deadline_date }}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="w-50"> Deadline Time</span>
+                                        </td>
+                                        <td>:</td>
+                                        <td>
+                                            <span
+                                                class="font-weight-semibold text-danger">{{ $deadline->deadline_time }}</span>
+                                        </td>
+                                    </tr>
+                                      <hr class="bg-black border-black">
+                                @endforeach
+                              
                                 @if (count($Research_Order->tasks) > 0)
                                     @foreach ($Research_Order->tasks as $task)
                                         <tr>
@@ -4030,6 +4237,7 @@
                                     @endforeach
                                 @endif
                             </tbody>
+                            
                         </table>
                     </div>
 
@@ -4983,7 +5191,7 @@
                                             class="font-weight-semibold">{{ $Research_Order->basic_info->Citation_Style }}</span>
                                     </td>
                                 </tr>
-                                 <tr>
+                                <tr>
                                     <td>
                                         <span class="w-50">Preferred Language</span>
                                     </td>
@@ -5003,211 +5211,409 @@
                                             class="font-weight-semibold">{{ $Research_Order->basic_info->Sources }}</span>
                                     </td>
                                 </tr>
-                                @if (!empty($Research_Order->submission_info->F_DeadLine))
+                                @if (!empty($Research_Order->assign_dead_lines))
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->first_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">First Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->first_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->second_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Second Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->second_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->third_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Third Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->third_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->forth_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Fourth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->forth_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->fifth_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Fifth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->fifth_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->sixth_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Sixth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->sixth_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->seventh_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Seventh Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->seventh_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->eighth_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Eighth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->eighth_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->nineth_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Ninth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->nineth_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->tenth_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Tenth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->tenth_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->eleventh_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Eleventh Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->eleventh_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->twelveth_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Twelfth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->twelveth_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->thirteen_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Thirteenth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->thirteen_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->fourteen_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Fourteenth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->fourteen_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->fifteen_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Fifteenth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->fifteen_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
                                     <tr>
                                         <td>
-                                            <span class="w-50">First Draft</span>
+                                            <span class="w-50">Final Deadline</span>
                                         </td>
                                         <td>:</td>
                                         <td>
                                             <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->F_DeadLine }}</span>
+                                                class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->deadline_date ?? '' }}</span>
                                         </td>
                                     </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->S_DeadLine))
                                     <tr>
                                         <td>
-                                            <span class="w-50">Second Draft</span>
+                                            <span class="w-50"> Deadline Time</span>
                                         </td>
                                         <td>:</td>
                                         <td>
                                             <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->S_DeadLine }}</span>
+                                                class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->deadline_time ?? '' }}</span>
                                         </td>
                                     </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->T_DeadLine))
+                                @else
+                                    @if (!empty($Research_Order->submission_info->F_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">First Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->F_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->S_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Second Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->S_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->T_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Third Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->T_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->Four_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Fourth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->Four_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->Fifth_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Fifth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->Fifth_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->Sixth_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Sixth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->Sixth_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->Seven_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Seventh Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->Seven_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->Eight_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Eighth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->Eight_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->nine_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Ninth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->nine_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->ten_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Tenth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->ten_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->eleven_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Eleventh Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->eleven_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->twelve_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Twelfth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->twelve_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->thirteen_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Thirteenth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->thirteen_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->fourteen_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Fourteenth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->fourteen_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->fifteen_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Fifteenth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->fifteen_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
                                     <tr>
                                         <td>
-                                            <span class="w-50">Third Draft</span>
+                                            <span class="w-50">Final Deadline</span>
                                         </td>
                                         <td>:</td>
                                         <td>
                                             <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->T_DeadLine }}</span>
+                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->DeadLine }}</span>
                                         </td>
                                     </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->Four_DeadLine))
                                     <tr>
                                         <td>
-                                            <span class="w-50">Fourth Draft</span>
+                                            <span class="w-50">Final Deadline Time</span>
                                         </td>
                                         <td>:</td>
                                         <td>
                                             <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->Four_DeadLine }}</span>
+                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->DeadLine_Time }}</span>
                                         </td>
                                     </tr>
                                 @endif
-
-                                @if (!empty($Research_Order->submission_info->Fifth_DeadLine))
-                                    <tr>
-                                        <td>
-                                            <span class="w-50">Fifth Draft</span>
-                                        </td>
-                                        <td>:</td>
-                                        <td>
-                                            <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->Fifth_DeadLine }}</span>
-                                        </td>
-                                    </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->Sixth_DeadLine))
-                                    <tr>
-                                        <td>
-                                            <span class="w-50">Sixth Draft</span>
-                                        </td>
-                                        <td>:</td>
-                                        <td>
-                                            <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->Sixth_DeadLine }}</span>
-                                        </td>
-                                    </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->Seven_DeadLine))
-                                    <tr>
-                                        <td>
-                                            <span class="w-50">Seventh Draft</span>
-                                        </td>
-                                        <td>:</td>
-                                        <td>
-                                            <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->Seven_DeadLine }}</span>
-                                        </td>
-                                    </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->Eight_DeadLine))
-                                    <tr>
-                                        <td>
-                                            <span class="w-50">Eighth Draft</span>
-                                        </td>
-                                        <td>:</td>
-                                        <td>
-                                            <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->Eight_DeadLine }}</span>
-                                        </td>
-                                    </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->nine_DeadLine))
-                                    <tr>
-                                        <td>
-                                            <span class="w-50">Ninth Draft</span>
-                                        </td>
-                                        <td>:</td>
-                                        <td>
-                                            <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->nine_DeadLine }}</span>
-                                        </td>
-                                    </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->ten_DeadLine))
-                                    <tr>
-                                        <td>
-                                            <span class="w-50">Tenth Draft</span>
-                                        </td>
-                                        <td>:</td>
-                                        <td>
-                                            <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->ten_DeadLine }}</span>
-                                        </td>
-                                    </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->eleven_DeadLine))
-                                    <tr>
-                                        <td>
-                                            <span class="w-50">Eleventh Draft</span>
-                                        </td>
-                                        <td>:</td>
-                                        <td>
-                                            <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->eleven_DeadLine }}</span>
-                                        </td>
-                                    </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->twelve_DeadLine))
-                                    <tr>
-                                        <td>
-                                            <span class="w-50">Twelfth Draft</span>
-                                        </td>
-                                        <td>:</td>
-                                        <td>
-                                            <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->twelve_DeadLine }}</span>
-                                        </td>
-                                    </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->thirteen_DeadLine))
-                                    <tr>
-                                        <td>
-                                            <span class="w-50">Thirteenth Draft</span>
-                                        </td>
-                                        <td>:</td>
-                                        <td>
-                                            <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->thirteen_DeadLine }}</span>
-                                        </td>
-                                    </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->fourteen_DeadLine))
-                                    <tr>
-                                        <td>
-                                            <span class="w-50">Fourteenth Draft</span>
-                                        </td>
-                                        <td>:</td>
-                                        <td>
-                                            <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->fourteen_DeadLine }}</span>
-                                        </td>
-                                    </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->fifteen_DeadLine))
-                                    <tr>
-                                        <td>
-                                            <span class="w-50">Fifteenth Draft</span>
-                                        </td>
-                                        <td>:</td>
-                                        <td>
-                                            <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->fifteen_DeadLine }}</span>
-                                        </td>
-                                    </tr>
-                                @endif
-
-                                <tr>
-                                    <td>
-                                        <span class="w-50">Final Deadline</span>
-                                    </td>
-                                    <td>:</td>
-                                    <td>
-                                        <span
-                                            class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->DeadLine }}</span>
-                                    </td>
-                                </tr>
                                 <tr>
                                     <td>
                                         <span class="w-50">Status</span>
@@ -5953,7 +6359,7 @@
                                             class="font-weight-semibold">{{ $Research_Order->basic_info->Citation_Style }}</span>
                                     </td>
                                 </tr>
-                                 <tr>
+                                <tr>
                                     <td>
                                         <span class="w-50">Preferred Language</span>
                                     </td>
@@ -6581,7 +6987,7 @@
                                             class="font-weight-semibold">{{ $Research_Order->basic_info->Citation_Style }}</span>
                                     </td>
                                 </tr>
-                                 <tr>
+                                <tr>
                                     <td>
                                         <span class="w-50">Preferred Language</span>
                                     </td>
@@ -6601,241 +7007,409 @@
                                             class="font-weight-semibold">{{ $Research_Order->basic_info->Sources }}</span>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <span class="w-50">DeadLine Time</span>
-                                    </td>
-                                    <td>:</td>
-                                    <td>
-                                        <span
-                                            class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->DeadLine_Time }}</span>
-                                    </td>
-                                </tr>
-                                @if (!empty($Research_Order->submission_info->F_DeadLine))
+                                @if (empty($Research_Order->assign_dead_lines))
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->first_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">First Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->first_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->second_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Second Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->second_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->third_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Third Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->third_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->forth_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Fourth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->forth_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->fifth_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Fifth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->fifth_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->sixth_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Sixth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->sixth_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->seventh_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Seventh Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->seventh_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->eighth_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Eighth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->eighth_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->nineth_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Ninth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->nineth_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->tenth_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Tenth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->tenth_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->eleventh_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Eleventh Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->eleventh_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->twelveth_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Twelfth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->twelveth_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->thirteen_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Thirteenth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->thirteen_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->fourteen_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Fourteenth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->fourteen_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->assign_dead_lines->first()->fifteen_draft))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Fifteenth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->fifteen_draft }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
                                     <tr>
                                         <td>
-                                            <span class="w-50">First Draft</span>
+                                            <span class="w-50">Final Deadline</span>
                                         </td>
                                         <td>:</td>
                                         <td>
                                             <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->F_DeadLine }}</span>
+                                                class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->deadline_date ?? $Research_Order->submission_info->DeadLine }}</span>
                                         </td>
                                     </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->S_DeadLine))
                                     <tr>
                                         <td>
-                                            <span class="w-50">Second Draft</span>
+                                            <span class="w-50"> Deadline Time</span>
                                         </td>
                                         <td>:</td>
                                         <td>
                                             <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->S_DeadLine }}</span>
+                                                class="font-weight-semibold text-danger">{{ $Research_Order->assign_dead_lines->first()->deadline_time ?? $Research_Order->submission_info->DeadLine_Time }}</span>
                                         </td>
                                     </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->T_DeadLine))
+                                @else
+                                    @if (!empty($Research_Order->submission_info->F_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">First Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->F_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->S_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Second Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->S_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->T_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Third Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->T_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->Four_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Fourth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->Four_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->Fifth_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Fifth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->Fifth_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->Sixth_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Sixth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->Sixth_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->Seven_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Seventh Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->Seven_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->Eight_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Eighth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->Eight_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->nine_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Ninth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->nine_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->ten_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Tenth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->ten_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->eleven_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Eleventh Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->eleven_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->twelve_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Twelfth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->twelve_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->thirteen_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Thirteenth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->thirteen_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->fourteen_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Fourteenth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->fourteen_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @if (!empty($Research_Order->submission_info->fifteen_DeadLine))
+                                        <tr>
+                                            <td>
+                                                <span class="w-50">Fifteenth Draft</span>
+                                            </td>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->fifteen_DeadLine }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
                                     <tr>
                                         <td>
-                                            <span class="w-50">Third Draft</span>
+                                            <span class="w-50">Final Deadline</span>
                                         </td>
                                         <td>:</td>
                                         <td>
                                             <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->T_DeadLine }}</span>
+                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->DeadLine }}</span>
                                         </td>
                                     </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->Four_DeadLine))
                                     <tr>
                                         <td>
-                                            <span class="w-50">Fourth Draft</span>
+                                            <span class="w-50">Final Deadline Time</span>
                                         </td>
                                         <td>:</td>
                                         <td>
                                             <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->Four_DeadLine }}</span>
+                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->DeadLine_Time }}</span>
                                         </td>
                                     </tr>
                                 @endif
-
-                                @if (!empty($Research_Order->submission_info->Fifth_DeadLine))
-                                    <tr>
-                                        <td>
-                                            <span class="w-50">Fifth Draft</span>
-                                        </td>
-                                        <td>:</td>
-                                        <td>
-                                            <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->Fifth_DeadLine }}</span>
-                                        </td>
-                                    </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->Sixth_DeadLine))
-                                    <tr>
-                                        <td>
-                                            <span class="w-50">Sixth Draft</span>
-                                        </td>
-                                        <td>:</td>
-                                        <td>
-                                            <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->Sixth_DeadLine }}</span>
-                                        </td>
-                                    </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->Seven_DeadLine))
-                                    <tr>
-                                        <td>
-                                            <span class="w-50">Seventh Draft</span>
-                                        </td>
-                                        <td>:</td>
-                                        <td>
-                                            <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->Seven_DeadLine }}</span>
-                                        </td>
-                                    </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->Eight_DeadLine))
-                                    <tr>
-                                        <td>
-                                            <span class="w-50">Eighth Draft</span>
-                                        </td>
-                                        <td>:</td>
-                                        <td>
-                                            <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->Eight_DeadLine }}</span>
-                                        </td>
-                                    </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->nine_DeadLine))
-                                    <tr>
-                                        <td>
-                                            <span class="w-50">Ninth Draft</span>
-                                        </td>
-                                        <td>:</td>
-                                        <td>
-                                            <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->nine_DeadLine }}</span>
-                                        </td>
-                                    </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->ten_DeadLine))
-                                    <tr>
-                                        <td>
-                                            <span class="w-50">Tenth Draft</span>
-                                        </td>
-                                        <td>:</td>
-                                        <td>
-                                            <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->ten_DeadLine }}</span>
-                                        </td>
-                                    </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->eleven_DeadLine))
-                                    <tr>
-                                        <td>
-                                            <span class="w-50">Eleventh Draft</span>
-                                        </td>
-                                        <td>:</td>
-                                        <td>
-                                            <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->eleven_DeadLine }}</span>
-                                        </td>
-                                    </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->twelve_DeadLine))
-                                    <tr>
-                                        <td>
-                                            <span class="w-50">Twelfth Draft</span>
-                                        </td>
-                                        <td>:</td>
-                                        <td>
-                                            <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->twelve_DeadLine }}</span>
-                                        </td>
-                                    </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->thirteen_DeadLine))
-                                    <tr>
-                                        <td>
-                                            <span class="w-50">Thirteenth Draft</span>
-                                        </td>
-                                        <td>:</td>
-                                        <td>
-                                            <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->thirteen_DeadLine }}</span>
-                                        </td>
-                                    </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->fourteen_DeadLine))
-                                    <tr>
-                                        <td>
-                                            <span class="w-50">Fourteenth Draft</span>
-                                        </td>
-                                        <td>:</td>
-                                        <td>
-                                            <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->fourteen_DeadLine }}</span>
-                                        </td>
-                                    </tr>
-                                @endif
-
-                                @if (!empty($Research_Order->submission_info->fifteen_DeadLine))
-                                    <tr>
-                                        <td>
-                                            <span class="w-50">Fifteenth Draft</span>
-                                        </td>
-                                        <td>:</td>
-                                        <td>
-                                            <span
-                                                class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->fifteen_DeadLine }}</span>
-                                        </td>
-                                    </tr>
-                                @endif
-
-                                <tr>
-                                    <td>
-                                        <span class="w-50">Final Time</span>
-                                    </td>
-                                    <td>:</td>
-                                    <td>
-                                        <span
-                                            class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->DeadLine_Time }}</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span class="w-50">Final Deadline</span>
-                                    </td>
-                                    <td>:</td>
-                                    <td>
-                                        <span
-                                            class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->DeadLine }}</span>
-                                    </td>
-                                </tr>
-
-                                <!--<tr>-->
-                                <!--    <td>-->
-                                <!--        <span class="w-50">Final Deadline</span>-->
-                                <!--    </td>-->
-                                <!--    <td>:</td>-->
-                                <!--    <td>-->
-                                <!--        <span class="font-weight-semibold text-danger">{{ $Research_Order->submission_info->DeadLine }}</span>-->
-                                <!--    </td>-->
-                                <!--</tr>-->
                                 @php
                                     $lastTask = null;
                                 @endphp
@@ -6874,12 +7448,10 @@
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-    <!-- New Task Modal -->
     <div class="modal fade" id="TaskSubmissionModal">
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
@@ -7028,47 +7600,6 @@
         </div>
     </div>
 </div>
-
-<!-- Assign Modal -->
-<div class="modal fade" id="AssignModal">
-    <div class="modal-dialog modal-md" role="document">
-        <div class="modal-content">
-            <form action="{{ route('Assign.Order') }}" method="POST" class="needs-validation was-validated">
-                @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title">Assign Order</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <input type="hidden" name="Order_ID" value="{{ $Order_ID }}">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="form-label" for="Assign_ID">Coordinators</label>
-                                <select name="Assign_ID[]" id="Assign_ID" class="form-control select2"
-                                    data-placeholder="Select Coordinator" multiple required>
-                                    <option value="">Select Coordinator</option>
-                                    @forelse($AssignOrderArray as $writer)
-                                        <option value="{{ $writer->id }}">
-                                            {{ $writer->basic_info->full_name }}</option>
-                                    @empty
-                                        <option value="">No Coordinators/Writer available</option>
-                                    @endforelse
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary btn-block">Assign Order</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 
 <div class="modal fade" id="ViewTaskModal">
     <div class="modal-dialog modal-lg" role="document">
@@ -7417,6 +7948,257 @@
     </div>
 </div>
 
+
+<!-- Assign Modal -->
+<div class="modal fade" id="AssignModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form action="{{ route('Assign.Order') }}" method="POST" class="needs-validation was-validated">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title">Assign Order</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <input type="hidden" name="Order_ID" value="{{ $Research_Order->Order_ID }}">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <select name="Assign_ID[]" id="Assign_ID" class="form-control select2"
+                                    data-placeholder="Select Coordinator or Writer" multiple required>
+                                    <option value="">Select User</option>
+                                    @forelse($AssignOrderArray as $User)
+                                        <option value="{{ $User->id }}">{{ $User->basic_info->full_name }}
+                                        </option>
+                                    @empty
+                                        <option value="">No User available</option>
+                                    @endforelse
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-2">
+                            <label class="form-label">DeadLine Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <span class="feather feather-calendar"></span>
+                                    </div>
+                                </div>
+                                <input class="form-control" placeholder="MM/DD/YYYY" name="DeadLine" required
+                                    type="date">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-2">
+                            <label class="form-label">DeadLine Time</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <span class="feather feather-clock"></span>
+                                    </div>
+                                </div>
+                                <!-- input-group-prepend -->
+                                <input class="form-control" placeholder="Set time" name="DeadLine_Time"
+                                    type="time" required>
+                            </div>
+                            <!-- input-group -->
+                        </div>
+                        <div class="col-lg-4 mb-2">
+                            <label class="form-label">First Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <span class="feather feather-calendar"></span>
+                                    </div>
+                                </div>
+                                <input class="form-control" placeholder="MM/DD/YYYY" name="F_DeadLine"
+                                    type="date">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-2">
+                            <label class="form-label">Second Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <span class="feather feather-calendar"></span>
+                                    </div>
+                                </div>
+                                <input class="form-control" placeholder="MM/DD/YYYY" name="S_DeadLine"
+                                    type="date">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-2">
+                            <label class="form-label">Third Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <span class="feather feather-calendar"></span>
+                                    </div>
+                                </div>
+                                <input class="form-control" placeholder="MM/DD/YYYY" name="T_DeadLine"
+                                    type="date">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-3" id="4">
+                            <label class="form-label">Fourth Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <span class="feather feather-calendar"></span>
+                                    </div>
+                                </div>
+                                <input class="form-control" placeholder="MM/DD/YYYY" name="Four_DeadLine"
+                                    type="date">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-3" id="5">
+                            <label class="form-label">Fifth Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <span class="feather feather-calendar"></span>
+                                    </div>
+                                </div>
+                                <input class="form-control" placeholder="MM/DD/YYYY" name="Fifth_DeadLine"
+                                    type="date">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-3" id="6">
+                            <label class="form-label">Sixth Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <span class="feather feather-calendar"></span>
+                                    </div>
+                                </div>
+                                <input class="form-control" placeholder="MM/DD/YYYY" name="Sixth_DeadLine"
+                                    type="date">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-3" id="7">
+                            <label class="form-label">Seventh Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <span class="feather feather-calendar"></span>
+                                    </div>
+                                </div>
+                                <input class="form-control" placeholder="MM/DD/YYYY" name="Seven_DeadLine"
+                                    type="date">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-3" id="8">
+                            <label class="form-label">Eight Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <span class="feather feather-calendar"></span>
+                                    </div>
+                                </div>
+                                <input class="form-control" placeholder="MM/DD/YYYY" name="Eight_DeadLine"
+                                    type="date">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-3" id="9">
+                            <label class="form-label">Ninth Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <span class="feather feather-calendar"></span>
+                                    </div>
+                                </div>
+                                <input class="form-control" placeholder="MM/DD/YYYY" name="nine_DeadLine"
+                                    type="date">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-3" id="10">
+                            <label class="form-label">Tenth Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <span class="feather feather-calendar"></span>
+                                    </div>
+                                </div>
+                                <input class="form-control" placeholder="MM/DD/YYYY" name="ten_DeadLine"
+                                    type="date">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-3" id="11">
+                            <label class="form-label">Eleven Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <span class="feather feather-calendar"></span>
+                                    </div>
+                                </div>
+                                <input class="form-control" placeholder="MM/DD/YYYY" name="eleven_DeadLine"
+                                    type="date">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-3" id="12">
+                            <label class="form-label">Twelve Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <span class="feather feather-calendar"></span>
+                                    </div>
+                                </div>
+                                <input class="form-control" placeholder="MM/DD/YYYY" name="twelve_DeadLine"
+                                    type="date">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-3" id="13">
+                            <label class="form-label">Thirteen Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <span class="feather feather-calendar"></span>
+                                    </div>
+                                </div>
+                                <input class="form-control" placeholder="MM/DD/YYYY" name="thirteen_DeadLine"
+                                    type="date">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-3" id="14">
+                            <label class="form-label">Fourteen Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <span class="feather feather-calendar"></span>
+                                    </div>
+                                </div>
+                                <input class="form-control" placeholder="MM/DD/YYYY" name="fourteen_DeadLine"
+                                    type="date">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-3" id="15">
+                            <label class="form-label">Fifteen Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <span class="feather feather-calendar"></span>
+                                    </div>
+                                </div>
+                                <input class="form-control" placeholder="MM/DD/YYYY" name="fifteen_DeadLine"
+                                    type="date">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-3 mt-5">
+                            <button class="btn btn-secondary" id="addNewDraft">
+                                Add Draft
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-block">Assign Order</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 <script>
@@ -7443,6 +8225,22 @@
 <script>
     $(document).ready(function() {
         $('#Order-Messages').scrollTop($('#Order-Messages')[0].scrollHeight);
+    });
+
+
+    $(document).ready(function() {
+        for (var i = 3; i <= 15; i++) {
+            $('#' + i).hide();
+        }
+        var totalVal = 3;
+        $('#addNewDraft').click(function(e) {
+            e.preventDefault();
+            totalVal++;
+            $('#' + totalVal).show();
+            if (totalVal === 15) {
+                $('#addNewDraft').hide();
+            }
+        });
     });
 </script>
 @include('partials.research-order-custom-script');

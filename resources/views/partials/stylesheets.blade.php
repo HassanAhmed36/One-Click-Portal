@@ -71,7 +71,7 @@
     }
     @media screen and (min-width: 768px) {
         body {
-            zoom: 85% !important; /* Adjust the zoom level as per your requirement */
+            zoom: 95% !important; /* Adjust the zoom level as per your requirement */
         }
     }
 

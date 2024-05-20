@@ -23,6 +23,7 @@ class  ContentBasicInfo extends Model
         'Target_Gender',
         'Free_Image',
         'Generic_Type',
+        'Preferred_Language',
         'Keywords',
         'Meta_Description',
         'Reference_Link',

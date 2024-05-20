@@ -21,7 +21,7 @@ class Attendance extends Model
 
     public function getStatusAttribute()
     {
-        return PortalHelpers::getAttendanceStatus(status: $this->attributes['status']);
+        return PortalHelpers::getAttendanceStatus($this->attributes['status'] , $this->created_at);
     }
 
     public function createdAt(): Attribute

@@ -1,24 +1,20 @@
 <?php
 
+// app/Events/NoticeCreated.php
 namespace App\Events;
 
+use App\Models\Notice\Notice;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class NotificationCreated
+class NoticeCreated
 {
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-
     use Dispatchable, SerializesModels;
 
-    public $orderId;
+    public $notice;
 
-    public function __construct($orderId)
+    public function __construct(Notice $notice)
     {
-        $this->orderId = $orderId;
+        $this->notice = $notice;
     }
 }

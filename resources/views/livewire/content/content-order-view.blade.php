@@ -1518,6 +1518,14 @@
                                                             data-bs-placement="top" title="Download"
                                                             target="_blank"><i
                                                                 class="feather feather-download   text-success"></i></a>
+                                                                
+                                                        @if($auth_user->Role_ID === 9)
+                                                         <a href="{{ route('delete.attachment' , ['id' => $attachment->id]) }}"
+                                                            class="action-btns1"
+                                                            ><i
+                                                                class="feather feather-trash   text-danger"></i></a>
+                                                                
+                                                        @endif
                                                     </div>
                                                 </td>
                                             </tr>
@@ -2353,7 +2361,7 @@
                                     <label class="form-label">Total Words</label>
                                     <input class="form-control mb-4 is-valid Order-Words" name="Order_Words"
                                         placeholder="Enter Order Words" id="Order_Words" min="0"
-                                        type="number" value="" required>
+                                        type="number" value="0" required>
                                 </div>
                             </div>
                             <div class="col-lg-12">
@@ -6089,7 +6097,7 @@
 
                     $('.Order-DeadLine').val(data.Selected_Date);
                     $('.Order-Time').val(data.Selected_Time);
-                    $('.Order-Words').val(data.Selected_Words);
+                    $('.Order-Words').val(0);
                 },
                 error: function(data) {
 
@@ -6173,7 +6181,7 @@
                 success: function(data) {
                     $('.Order-DeadLine').val(data.Selected_Date);
                     $('.Order-Time').val(data.Selected_Time);
-                    $('.Order-Words').val(data.Selected_Words);
+                    $('.Order-Words').val(0);
                 },
                 error: function(data) {
                     console.log(data.responseJSON);

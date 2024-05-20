@@ -199,7 +199,7 @@
                                 <span class="feather feather-calendar"></span>
                             </div>
                         </div>
-                        <input class="form-control" placeholder="MM/DD/YYYY" name="DeadLine" required
+                        <input class="form-control min-date" placeholder="MM/DD/YYYY" name="DeadLine" required
                             type="date">
                     </div>
                 </div>
@@ -223,7 +223,7 @@
                                 <span class="feather feather-calendar"></span>
                             </div>
                         </div>
-                        <input class="form-control" placeholder="MM/DD/YYYY" name="F_DeadLine" type="date">
+                        <input class="form-control min-date" placeholder="MM/DD/YYYY" name="F_DeadLine" type="date">
                     </div>
                 </div>
                 <div class="col-lg-3 mb-2">
@@ -234,7 +234,7 @@
                                 <span class="feather feather-calendar"></span>
                             </div>
                         </div>
-                        <input class="form-control" placeholder="MM/DD/YYYY" name="S_DeadLine" type="date">
+                        <input class="form-control min-date" placeholder="MM/DD/YYYY" name="S_DeadLine" type="date">
                     </div>
                 </div>
                 <div class="col-lg-3 mb-2">
@@ -245,7 +245,7 @@
                                 <span class="feather feather-calendar"></span>
                             </div>
                         </div>
-                        <input class="form-control" placeholder="MM/DD/YYYY" name="T_DeadLine" type="date">
+                        <input class="form-control min-date" placeholder="MM/DD/YYYY" name="T_DeadLine" type="date">
                     </div>
                 </div>
                 <div class="col-lg-3 mb-3" id="4">
@@ -256,7 +256,7 @@
                                 <span class="feather feather-calendar"></span>
                             </div>
                         </div>
-                        <input class="form-control" placeholder="MM/DD/YYYY" name="Four_DeadLine" type="date">
+                        <input class="form-control min-date" placeholder="MM/DD/YYYY" name="Four_DeadLine" type="date">
                     </div>
                 </div>
                 <div class="col-lg-3 mb-3" id="5">
@@ -267,7 +267,7 @@
                                 <span class="feather feather-calendar"></span>
                             </div>
                         </div>
-                        <input class="form-control" placeholder="MM/DD/YYYY" name="Fifth_DeadLine" type="date">
+                        <input class="form-control min-date" placeholder="MM/DD/YYYY" name="Fifth_DeadLine" type="date">
                     </div>
                 </div>
                 <div class="col-lg-3 mb-3" id="6">
@@ -278,7 +278,7 @@
                                 <span class="feather feather-calendar"></span>
                             </div>
                         </div>
-                        <input class="form-control" placeholder="MM/DD/YYYY" name="Sixth_DeadLine" type="date">
+                        <input class="form-control min-date" placeholder="MM/DD/YYYY" name="Sixth_DeadLine" type="date">
                     </div>
                 </div>
                 <div class="col-lg-3 mb-3" id="7">
@@ -289,7 +289,7 @@
                                 <span class="feather feather-calendar"></span>
                             </div>
                         </div>
-                        <input class="form-control" placeholder="MM/DD/YYYY" name="Seven_DeadLine" type="date">
+                        <input class="form-control min-date" placeholder="MM/DD/YYYY" name="Seven_DeadLine" type="date">
                     </div>
                 </div>
                 <div class="col-lg-3 mb-3" id="8">
@@ -300,7 +300,7 @@
                                 <span class="feather feather-calendar"></span>
                             </div>
                         </div>
-                        <input class="form-control" placeholder="MM/DD/YYYY" name="Eight_DeadLine" type="date">
+                        <input class="form-control min-date" placeholder="MM/DD/YYYY" name="Eight_DeadLine" type="date">
                     </div>
                 </div>
                 <div class="col-lg-3 mb-3" id="9">
@@ -311,7 +311,7 @@
                                 <span class="feather feather-calendar"></span>
                             </div>
                         </div>
-                        <input class="form-control" placeholder="MM/DD/YYYY" name="nine_DeadLine" type="date">
+                        <input class="form-control min-date" placeholder="MM/DD/YYYY" name="nine_DeadLine" type="date">
                     </div>
                 </div>
                 <div class="col-lg-3 mb-3" id="10">
@@ -322,7 +322,7 @@
                                 <span class="feather feather-calendar"></span>
                             </div>
                         </div>
-                        <input class="form-control" placeholder="MM/DD/YYYY" name="ten_DeadLine" type="date">
+                        <input class="form-control min-date" placeholder="MM/DD/YYYY" name="ten_DeadLine" type="date">
                     </div>
                 </div>
                 <div class="col-lg-3 mb-3" id="11">
@@ -333,7 +333,7 @@
                                 <span class="feather feather-calendar"></span>
                             </div>
                         </div>
-                        <input class="form-control" placeholder="MM/DD/YYYY" name="eleven_DeadLine" type="date">
+                        <input class="form-control min-date" placeholder="MM/DD/YYYY" name="eleven_DeadLine" type="date">
                     </div>
                 </div>
                 <div class="col-lg-3 mb-3" id="12">
@@ -344,7 +344,7 @@
                                 <span class="feather feather-calendar"></span>
                             </div>
                         </div>
-                        <input class="form-control" placeholder="MM/DD/YYYY" name="twelve_DeadLine" type="date">
+                        <input class="form-control min-date" placeholder="MM/DD/YYYY" name="twelve_DeadLine" type="date">
                     </div>
                 </div>
                 <div class="col-lg-3 mb-3" id="13">
@@ -355,7 +355,7 @@
                                 <span class="feather feather-calendar"></span>
                             </div>
                         </div>
-                        <input class="form-control" placeholder="MM/DD/YYYY" name="thirteen_DeadLine"
+                        <input class="form-contro min-datel" placeholder="MM/DD/YYYY" name="thirteen_DeadLine"
                             type="date">
                     </div>
                 </div>
@@ -367,7 +367,7 @@
                                 <span class="feather feather-calendar"></span>
                             </div>
                         </div>
-                        <input class="form-control" placeholder="MM/DD/YYYY" name="fourteen_DeadLine"
+                        <input class="form-control min-date" placeholder="MM/DD/YYYY" name="fourteen_DeadLine"
                             type="date">
                     </div>
                 </div>
@@ -379,7 +379,7 @@
                                 <span class="feather feather-calendar"></span>
                             </div>
                         </div>
-                        <input class="form-control" placeholder="MM/DD/YYYY" name="fifteen_DeadLine" type="date">
+                        <input class="form-control min-date" placeholder="MM/DD/YYYY" name="fifteen_DeadLine" type="date">
                     </div>
                 </div>
                 <div class="col-lg-3 mb-3 mt-5">

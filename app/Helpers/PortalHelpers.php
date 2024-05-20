@@ -23,6 +23,8 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use PDO;
 use Illuminate\Support\Facades\Cache;
+use App\Models\Holiday\Holiday;
+
 
 
 class PortalHelpers
@@ -323,9 +325,9 @@ class PortalHelpers
         }
     }
 
- public static function getAttendanceStatus($status)
-    {
-       if ((int)$status == 0) {
+public static function getAttendanceStatus($status, $created_at = null)
+{
+    if ((int)$status == 0) {
         return 'Present';
     } elseif ((int)$status == 1) {
         return 'Absent';
@@ -341,19 +343,20 @@ class PortalHelpers
         return 'Sick';
     } elseif ((int)$status == 7) {
         return 'UnPaid';
-    } elseif ((int)$status == 8) {
-        return 'Holiday';
+    } elseif ((int)$status == 8 && $created_at !== null) {
+        $date = Carbon::parse($created_at);
+        $holiday = Holiday::where('date', $date)->first();
+        return $holiday ? $holiday->name : 'Holiday'; 
     } elseif ((int)$status == 9) {
         return 'Not Mark';
-    } 
-     elseif ((int)$status == 10) {
+    } elseif ((int)$status == 10) {
         return 'Sunday';
-     }
-    else {
+    } else {
         return 'Not Marked';
     }
+}
 
-    }
+
            
 
     public static function visualizeAttendanceStatus($status)
@@ -381,28 +384,32 @@ class PortalHelpers
         return Carbon::parse($end)->diff(Carbon::parse($start))->format('%H:%I:%S'); // Output the total time
     }
 
+
     public static function setAttendanceStatus($check_in_time, $user_id): int
-    {
-        
-       
-        $shiftTiming = UserOfficeTiming::where('user_id', $user_id)->pluck('Start_Time')->first();
+{
+    $shiftTiming = UserOfficeTiming::where('user_id', $user_id)->pluck('Start_Time')->first();
+    $checkIn = Carbon::parse($check_in_time);
+    $shiftStart = Carbon::parse($shiftTiming);
+    $shiftEnd = $shiftStart->copy()->addHours(9);
+    $timeDifference = $checkIn->diffInMinutes($shiftStart);
+    $user = User::find($user_id);
 
-        $checkIn = Carbon::parse($check_in_time);
-        $shiftStart = Carbon::parse($shiftTiming);
-        $shiftEnd = $shiftStart->copy()->addHours(9); // Assuming shift duration is 8 hours
-        $timeDifference = $checkIn->diffInMinutes($shiftStart);
-        $user = User::find($user_id);
-
-        if ($timeDifference >= 270) { // User checked in after 4.5 hours (half shift duration)
-            return 3; // Half a day
-        }
-        $time = in_array($user->Role_ID, [9, 10, 11]) ? 5 : 30;
-        if ($timeDifference >= $time) { 
-
-            return 2; // Late check-in
-        }
-        return 0; // Full day
+    if (in_array($user->Role_ID, [9, 10, 11]) && $checkIn->greaterThanOrEqualTo($shiftStart->addMinutes(5))) {
+        return 2; 
     }
+
+    if ($timeDifference >= 30) {
+        return 2; 
+    }
+
+    
+    if ($timeDifference >= 270) {
+        return 3; 
+    }
+
+    return 0;
+}
+
     
     public static function getLeaveStatus($status): string
     {

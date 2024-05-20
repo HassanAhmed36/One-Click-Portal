@@ -35,6 +35,25 @@
 <script src="{{ asset('assets/js/custom.js') }}"></script>
 <script src="{{ asset('assets/js/select2.js') }}"></script>
 <script>
+    // Function to play notification audio
+    function playNotificationAudio() {
+        var audio = new Audio('{{ asset("notification.mp3") }}');
+        audio.play();
+    }
+
+    // Function to update notification count in local storage
+    function updateNotificationCount(count) {
+        localStorage.setItem('notificationCount', count);
+    }
+
+    // Function to check and play notification sound
+    function checkAndPlayNotificationSound(count) {
+        var storedCount = parseInt(localStorage.getItem('notificationCount')) || 0;
+        if (count > storedCount) {
+            playNotificationAudio();
+        }
+    }
+
     // Get All Notifications
     getNotifications();
     setInterval(function() {
@@ -47,6 +66,9 @@
             type: 'GET',
             success: function(data) {
                 $('.Portal-Notification').html(data.html);
+                var notificationsCount = $('.NotificationCount').text();
+                checkAndPlayNotificationSound(notificationsCount);
+                updateNotificationCount(notificationsCount);
             },
             error: function (data) {
                 console.log(data.error);
@@ -55,7 +77,7 @@
     }
 
     $(document).on('click', '.MarkRead', function () {
-        const Notify_ID = $(this).data('notification-id'); // Use data() to retrieve the attribute value
+        const Notify_ID = $(this).data('notification-id');
         $.ajax({
             url: '{{ route('Mark.Read') }}',
             type: 'GET',
@@ -73,7 +95,7 @@
 
     $(document).on('click', '.MarkReadAll', function () {
         const Notify_ID = $(this).find('input').val();
-          const notificationHeader = $('.notification-side-bar-header');
+        const notificationHeader = $('.notification-side-bar-header');
         notificationHeader.addClass('d-block');
         $.ajax({
             url: '{{ route('Mark.Read.All') }}',
@@ -90,11 +112,7 @@
             }
         });
     });
-    
-    $(document).ready(function() {
-        // Select the Order-Messages div and set scrollTop to its scrollHeight
-        $('#Order-Messages').scrollTop($('#Order-Messages')[0].scrollHeight);
-    });
+
 </script>
 
 

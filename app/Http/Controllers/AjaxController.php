@@ -175,7 +175,7 @@ class AjaxController extends Controller
                 $array = [1, 4];
                 $notify_id = $Cordinator;
             } elseif ($authUser->Role_ID == 5) {
-                $array = [1, 4];
+                $array = [1, 4 , 9 ,10 ,11];
                 $notify_id = $taskWriter;
             } elseif ($authUser->Role_ID == 4) {
                 $array = [1, 9, 10, 11];
@@ -286,7 +286,7 @@ class AjaxController extends Controller
         $currentYear = Carbon::now()->year;
         $currentMonth = Carbon::now()->month;
 
-        $query = ResearchOrderChat::whereYear('created_at', $currentYear)
+        $query = ResearchOrderChat::OrderBy('created_at' , 'asc')
             ->with([
                 'authorized_user' => function ($q) {
                     $q->select('id', 'Role_ID')->with([
@@ -327,7 +327,7 @@ class AjaxController extends Controller
             });
         } elseif ($Role_ID == 9 || $Role_ID == 10 || $Role_ID == 11 || $Role_ID == 17) {
             $query->whereHas('authorized_user', function ($q) {
-                $q->whereIn('Role_ID', [1, 4, 5, 7, 8, 9, 10, 11, 12, 17 , 3]);
+                $q->whereIn('Role_ID', [1, 4, 5, 7, 8, 9, 10, 11, 12, 17 ,3]);
             })->whereIn('is_executive', [0, 1]);
         } elseif ($Role_ID == 12 || $Role_ID == 8) {
             $query->whereHas('authorized_user', function ($q) {

@@ -18,7 +18,7 @@ class ViewLoginHistory extends Component
             
         } else {
             
-            $loginHistory = LoginHistory::with('users.basif_info')->latest('id')
+            $loginHistory = LoginHistory::with('users.basic_info')->latest('id')
                 ->where('user_id', Auth::guard('Authorized')->user()->id)
                 ->get();
                 

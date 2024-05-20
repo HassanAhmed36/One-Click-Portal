@@ -264,14 +264,7 @@
 </script>
 
 
-<div class="modal fade noticeDetailModal" id="noticeDetailModal" tabindex="-1" aria-labelledby="noticeDetailModalLabel"
-    aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog modal-lg" id="noticeDetailContent">
 
-        @include('livewire.notice.notice-detail')
-
-    </div>
-</div>
 
 <div class="modal fade" id="EditnoticeDetailModal" tabindex="-1" aria-labelledby="EditnoticeDetailModalLabel"
     aria-hidden="true">
@@ -282,10 +275,7 @@
 
 
 <script>
-    $(document).ready(function() {
-        
-        $('.noticeDetailModal').modal({ backdrop: 'static', keyboard: false }); 
-    });
+
     $('.view-detail-btn').click(function() {
         
         var noticeId = $(this).data('notice-id');
@@ -300,8 +290,8 @@
             },
             success: function(response) {
                 console.log(response);
-                $('#noticeDetailContent').html(response);
-                $('#noticeDetailModal').modal('show');
+                $('.noticeDetailContent').html(response);
+                $('.noticeDetailModal').modal('show');
                 $('.noticeDetailModal').modal({ backdrop: 'static', keyboard: false });
             },
             error: function(xhr, status, error) {
@@ -330,70 +320,4 @@
     });
 </script>
 
-@if($interval == "true")
-<script>
-    function checkForActiveNotices() {
-        $.ajax({
-            url: '{{ route('check.active.notices') }}',
-            type: 'GET',
-            dataType: 'json',
-            data: {
-                submitbtn: 'show',
-            },
-            success: function(response) {
-                console.log(response);
-                if (response.success && response.noticeDetail) {
-                    renderNoticeDetail(response.noticeDetail);
-                    timeLimit = parseInt(response.time_limit);
-                    hideClose(timeLimit);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-            }
-        });
-
-        function renderNoticeDetail(noticeDetail) {
-            $('#noticeDetailContent').html(noticeDetail);
-            $('#noticeDetailModal').modal('show');
-        }
-
-        function hideClose(timeLimit) {
-            if (timeLimit > 0) {
-                var $closeButton = $('.btn-close');
-                var $submit_btn = $('.submit_btn');
-            $closeButton.hide();
-            $submit_btn.hide();
-                startTimer(timeLimit * 60);
-            }else{
-                $closeButton.fadeIn();
-                $submit_btn.fadeIn();
-            }
-        }
-
-        function startTimer(totalSeconds) {
-            var interval = setInterval(function() {
-                if (totalSeconds <= 0) {
-                    var $closeButton = $('.btn-close');
-                    var $submit_btn = $('.submit_btn');
-                    $closeButton.fadeIn();
-                    $submit_btn.fadeIn();
-                    $('.timmerdisplay').text("");
-                } else {
-                    var minutes = Math.floor(totalSeconds / 60);
-                    var seconds = totalSeconds % 60;
-                    var formattedTime = pad(minutes) + ":" + pad(seconds);
-                    $('#timerDisplay').text(formattedTime);
-                    totalSeconds--;
-                }
-            }, 1000);
-        }
-
-        function pad(val) {
-            return val < 10 ? "0" + val : val;
-        }
-    }
-
-    setInterval(checkForActiveNotices, 30 * 60 * 1000);
-</script>
-@endif
+    

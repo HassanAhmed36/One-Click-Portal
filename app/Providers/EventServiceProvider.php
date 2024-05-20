@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Events\NoticeCreated;
 use App\Events\NotificationCreated;
 use App\Events\NotificationSound;
 use App\Listeners\PlayNotificationSound;
+use App\Listeners\SetSessionForNotice;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -23,6 +25,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         NotificationSound::class => [
             PlayNotificationSound::class,
+        ],
+        NoticeCreated::class => [
+            SetSessionForNotice::class,
         ],
     ];
 

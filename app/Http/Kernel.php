@@ -10,6 +10,7 @@ use App\Http\Middleware\Custom\EncryptRouteVariables;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Http\Middleware\SetIntervalSession;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
 use App\Http\Middleware\ValidateSignature;
@@ -47,6 +48,7 @@ class Kernel extends HttpKernel
         ValidatePostSize::class,
         TrimStrings::class,
         ConvertEmptyStringsToNull::class,
+        SetIntervalSession::class,
     ];
 
     /**
@@ -94,4 +96,5 @@ class Kernel extends HttpKernel
         'Check_Role' => CheckRole::class,
         'Encrypted_Route' => EncryptRouteVariables::class,
     ];
+    
 }

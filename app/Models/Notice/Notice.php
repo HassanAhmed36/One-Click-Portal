@@ -2,6 +2,7 @@
 
 namespace App\Models\Notice;
 
+use App\Events\NoticeCreated;
 use App\Models\Auth\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,6 +36,15 @@ class Notice extends Model
         return $this->hasMany(SurveyQuestions::class, 'notice_id');
     }
 
+
+    protected static function boot()
+    {
+        parent::boot();
+    
+        static::created(function ($notice) {
+            event(new NoticeCreated($notice));
+        });
+    }
 
     
 }

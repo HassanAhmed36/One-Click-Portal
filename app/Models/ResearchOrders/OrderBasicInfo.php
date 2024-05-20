@@ -21,6 +21,7 @@ class  OrderBasicInfo extends Model
         'Word_Count',
         'Spacing',
         'Citation_Style',
+        'Preferred_Language',
         'Sources',
         'Order_Website',
         'Order_Status',
@@ -58,14 +59,7 @@ class  OrderBasicInfo extends Model
         );
     }
 
-    public function wordCount(): Attribute
-    {
-        return new Attribute(
-            get: fn($value) => number_format($value),
-            set: fn($value) => $value,
-        );
-    }
-
+   
     public function createdAt(): Attribute
     {
         return new Attribute(

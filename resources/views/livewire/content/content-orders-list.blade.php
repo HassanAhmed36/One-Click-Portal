@@ -1,11 +1,200 @@
 @if((int) $auth_user->Role_ID === 1)
     {{-- Admin View --}}
     <div class="card mt-4">
-        <div class="card-header border-bottom-0">
+        <div class="card-header border-bottom-0 d-flex justify-content-between align-items-center">
             <div class="card-title">Content Orders List</div>
+            <div class="d-flex align-items-center">
+                <form method="GET" action="" class="d-flex align-items-center">
+                <div class="btn-group mb-2 me-2 d-flex flex-column">
+                    <label for="selectBox" class="form-label">Writters:</label>
+                    <select class="form-select" id="selectBox" name="writer">
+                        <option value="All">All writers</option>
+                      @foreach($Writters as $w)
+                        <option value="{{$w->id}}" @selected($w->id == request('writer'))>{{$w->basic_info->FullName}}</option>
+                      @endforeach
+                    </select>
+                </div>
+                <div class="btn-group mb-2 me-2 d-flex flex-column">
+                        <label for="selectBox" class="form-label">Start Date</label>
+                        <input type="date" name="start_date" class="form-control" value="{{ request('start_date') }}">
+                </div>
+                <div class="btn-group mb-2 me-2 d-flex flex-column">
+                        <label for="selectBox" class="form-label">End Date</label>
+                        <input type="date" name="end_date" class="form-control" value="{{ request('end_date') }}">
+                </div>
+                <div class="btn-group mb-2 me-2 d-flex flex-column pt-2">
+                       <button type="submit" class="btn btn-primary">Apply Filters</button>
+                </div>
+                
+                </form>
+                
+                <div>
+                    
+                    <a href="{{ route('Content.Orders') }}" class="btn btn-primary">Clear all filters</a>
+                </div>
+
+            </div>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
+            
+            
+            
+            <div class="table-responsive ">
+                @if(request()->has('start_date'))
+                
+                <table class="table table-vcenter text-nowrap table-bordered dead-line-orders mb-0" id="responsive-datatable">
+                        <thead>
+                            <tr>
+                                <th class="wd-10p border-bottom-0">S.No</th>
+                                <th class="wd-10p border-bottom-0">Order Code</th>
+                                <th class="wd-10p border-bottom-0">Assign</th>
+                                <th class="wd-10p border-bottom-0">Client</th>
+                                <th class="w-15p border-bottom-0">Words Count</th>
+                                <th class="wd-20p border-bottom-0">Deadline</th>
+                                <th class="wd-25p border-bottom-0">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          
+                                @php
+                                $order_words = 0; 
+                                
+                                @endphp
+                            @forelse($Content_Orders as $Order)
+                                @php
+                                 $order_words += $Order['Word_Count'];
+                                @endphp
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>
+                                        <div class="d-flex">
+                                            <div class="me-3 mt-0 mt-sm-2 d-block">
+                                                <h6 class="mb-1 fs-16">
+                                                    @if ($Order['Order_Type'] == 2)
+                                                        <a
+                                                            href="{{ route('Content.Order.Details', ['Order_ID' => $Order['Order_ID']]) }}">
+                                                        @elseif($Order['Order_Type'] == 3)
+                                                            <a
+                                                                href="{{ route('Design.Order.View', ['Order_ID' => $Order['Order_ID']]) }}">
+                                                            @elseif($Order['Order_Type'] == 1)
+                                                                <a
+                                                                    href="{{ route('Order.Details', ['Order_ID' => $Order['Order_ID']]) }}">
+                                                                @elseif($Order['Order_Type'] == 4)
+                                                                    <a
+                                                                        href="{{ route('Development.Order.View', ['Order_ID' => $Order['Order_ID']]) }}">
+                                                    @endif
+                                                    {{ $Order['Order_ID'] }}
+                                                    </a>
+                                                </h6>
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                     <td>
+                                       <p>{{$Order['F_Name'] && $Order['L_Name'] ?  $Order['F_Name'] .' '. $Order['L_Name'] : "Not Assign"}}</p>
+                                        </td>
+                                    @if (
+                                        (int) $auth_user->Role_ID === 1 ||
+                                            (int) $auth_user->Role_ID === 9 ||
+                                            (int) $auth_user->Role_ID === 10 ||
+                                            (int) $auth_user->Role_ID === 11)
+                                        <td>{{ $Order['Client_Name'] }}</td>
+                                    @endif
+                                    @if ((int) in_array($auth_user->Role_ID , [8] ))
+                                        <td>{{ $Order['Order_Type'] == 2 ? 'Content Writing Order' : 'Reseacrh Writing Order' }}
+                                        </td>
+                                    @endif
+                                    
+                                    <td>{{ $Order['Word_Count'] ?? 'No word count' }}</td>
+                                    <td>
+                                        @if (isset($Order['DeadLine']))
+                                            {{ $Order['DeadLine'] }} <span class="text-danger">(Deadline)</span>
+                                        @elseif(isset($Order['F_DeadLine']))
+                                            {{ $Order['F_DeadLine'] }} <span class="text-danger">(First
+                                                Draft)</span>
+                                        @elseif(isset($Order['S_DeadLine']))
+                                            {{ $Order['S_DeadLine'] }} <span class="text-danger">(Second
+                                                Draft)</span>
+                                        @elseif(isset($Order['T_DeadLine']))
+                                            {{ $Order['T_DeadLine'] }} <span class="text-danger">(Third
+                                                Draft)</span>
+                                        @elseif(isset($Order['Four_DeadLine']))
+                                            {{ $Order['Four_DeadLine'] }} <span class="text-danger">(Fourth
+                                                Draft)</span>
+                                        @elseif(isset($Order['Fifth_DeadLine']))
+                                            {{ $Order['Fifth_DeadLine'] }} <span class="text-danger">(Fifth
+                                                Draft)</span>
+                                        @elseif(isset($Order['Sixth_DeadLine']))
+                                            {{ $Order['Sixth_DeadLine'] }} <span class="text-danger">(Sixth
+                                                Draft)</span>
+                                        @elseif(isset($Order['Seven_DeadLine']))
+                                            {{ $Order['Seven_DeadLine'] }} <span class="text-danger">(Seventh
+                                                Draft)</span>
+                                        @elseif(isset($Order['Eight_DeadLine']))
+                                            {{ $Order['Eight_DeadLine'] }} <span class="text-danger">(Eighth
+                                                Draft)</span>
+                                        @elseif(isset($Order['nine_DeadLine']))
+                                            {{ $Order['nine_DeadLine'] }} <span class="text-danger">(Ninth
+                                                Draft)</span>
+                                        @elseif(isset($Order['ten_DeadLine']))
+                                            {{ $Order['ten_DeadLine'] }} <span class="text-danger">(Tenth
+                                                Draft)</span>
+                                        @elseif(isset($Order['eleven_DeadLine']))
+                                            {{ $Order['eleven_DeadLine'] }} <span class="text-danger">(Eleventh
+                                                Draft)</span>
+                                        @elseif(isset($Order['twelve_DeadLine']))
+                                            {{ $Order['twelve_DeadLine'] }} <span class="text-danger">(Twelfth
+                                                Draft)</span>
+                                        @elseif(isset($Order['thirteen_DeadLine']))
+                                            {{ $Order['thirteen_DeadLine'] }} <span class="text-danger">(Thirteenth
+                                                Draft)</span>
+                                        @elseif(isset($Order['fourteen_DeadLine']))
+                                            {{ $Order['fourteen_DeadLine'] }} <span class="text-danger">(Fourteenth
+                                                Draft)</span>
+                                        @elseif(isset($Order['fifteen_DeadLine']))
+                                            {{ $Order['fifteen_DeadLine'] }} <span class="text-danger">(Fifteenth
+                                                Draft)</span>
+                                        @else
+                                            No Deadline
+                                        @endif
+                                    </td>
+                                    @if ($Order['Order_Status'] == 0)
+                                        <td>Working</td>
+                                    @elseif($Order['Order_Status'] == 1)
+                                        <td>Canceled</td>
+                                    @elseif($Order['Order_Status'] == 2)
+                                        <td>Completed</td>
+                                    @elseif($Order['Order_Status'] == 3)
+                                        <td>Revision</td>
+                                    @endif
+                                </tr>
+                                
+                            @empty
+                                <tr>
+                                    <td colspan="5">
+                                        <div class="d-flex justify-content-center">
+                                            <div class="me-3 mt-0 mt-sm-2 d-block">
+                                                <h6 class="mb-1 fs-16">Orders are Not Found!</h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
+                            
+                             <tr>
+                                    <td><b>Total Assign Words</b></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>{{ $order_words }}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                        </tbody>
+    
+                    </table>
+                
+                @else
                 <table class="table table-bordered text-nowrap border-bottom" id="responsive-datatable">
                     <thead>
                     <tr>
@@ -35,8 +224,8 @@
                             <td>{{ $Order->client_info->Client_Name }}</td>
                             <td>
                                 <strong>Created By:</strong>
-{{ isset($Order->authorized_user) && $Order->authorized_user->basic_info ? $Order->authorized_user->basic_info->full_name : '' }}
-<br>
+                                {{ isset($Order->authorized_user) && $Order->authorized_user->basic_info ? $Order->authorized_user->basic_info->full_name : '' }}
+                                <br>
                                 @forelse($Order->assign as $User)
                                     <strong class="text-success">{{ $User->basic_info->full_name }}</strong> <br>
                                 @empty
@@ -64,6 +253,7 @@
                     @endforelse
                     </tbody>
                 </table>
+                @endif
             </div>
         </div>
     </div>
@@ -136,11 +326,205 @@
 @elseif((int) $auth_user->Role_ID === 17)
     {{-- Manager View --}}
     <div class="card mt-4">
-        <div class="card-header border-bottom-0">
+        <div class="card-header border-bottom-0 d-flex justify-content-between align-items-center">
             <div class="card-title">Content Orders List</div>
+            <div class="d-flex align-items-center">
+                <form method="GET" action="" class="d-flex align-items-center">
+                <div class="btn-group mb-2 me-2 d-flex flex-column">
+                    <label for="selectBox" class="form-label">Writters:</label>
+                    <select class="form-select" id="selectBox" name="writer">
+                        <option value="All">All writers</option>
+                      @foreach($Writters as $w)
+                        <option value="{{$w->id}}" @selected($w->id == request('writer'))>{{$w->basic_info->FullName}}</option>
+                      @endforeach
+                    </select>
+                </div>
+                <div class="btn-group mb-2 me-2 d-flex flex-column">
+                        <label for="selectBox" class="form-label">Start Date</label>
+                        <input type="date" name="start_date" class="form-control" value="{{ request('start_date') }}">
+                </div>
+                <div class="btn-group mb-2 me-2 d-flex flex-column">
+                        <label for="selectBox" class="form-label">End Date</label>
+                        <input type="date" name="end_date" class="form-control" value="{{ request('end_date') }}">
+                </div>
+                <div class="btn-group mb-2 me-2 d-flex flex-column pt-2">
+                       <button type="submit" class="btn btn-primary">Apply Filters</button>
+                </div>
+                
+                </form>
+                
+                <div>
+                    
+                    <a href="{{ route('Content.Orders') }}" class="btn btn-primary">Clear all filters</a>
+                </div>
+
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
+                
+                @if(request()->has('start_date'))
+                
+                <table class="table table-vcenter text-nowrap table-bordered dead-line-orders mb-0" id="responsive-datatable">
+                        <thead>
+                            <tr>
+                                <th class="wd-10p border-bottom-0">S.No</th>
+                                <th class="wd-10p border-bottom-0">Order Code</th>
+                                <th class="wd-10p border-bottom-0">Assign</th>
+                                
+                                 @if (
+                                        (int) $auth_user->Role_ID === 1 ||
+                                            (int) $auth_user->Role_ID === 9 ||
+                                            (int) $auth_user->Role_ID === 10 ||
+                                            (int) $auth_user->Role_ID === 11)
+                                <th class="wd-10p border-bottom-0">Client</th>
+                                @endif
+                                <th class="w-15p border-bottom-0">Words Count</th>
+                                <th class="wd-20p border-bottom-0">Deadline</th>
+                                <th class="wd-25p border-bottom-0">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          
+                                @php
+                                $order_words = 0; 
+                                
+                                @endphp
+                            @forelse($Content_Orders as $Order)
+                                @php
+                                 $order_words += $Order['Word_Count'];
+                                @endphp
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>
+                                        <div class="d-flex">
+                                            <div class="me-3 mt-0 mt-sm-2 d-block">
+                                                <h6 class="mb-1 fs-16">
+                                                    @if ($Order['Order_Type'] == 2)
+                                                        <a
+                                                            href="{{ route('Content.Order.Details', ['Order_ID' => $Order['Order_ID']]) }}">
+                                                        @elseif($Order['Order_Type'] == 3)
+                                                            <a
+                                                                href="{{ route('Design.Order.View', ['Order_ID' => $Order['Order_ID']]) }}">
+                                                            @elseif($Order['Order_Type'] == 1)
+                                                                <a
+                                                                    href="{{ route('Order.Details', ['Order_ID' => $Order['Order_ID']]) }}">
+                                                                @elseif($Order['Order_Type'] == 4)
+                                                                    <a
+                                                                        href="{{ route('Development.Order.View', ['Order_ID' => $Order['Order_ID']]) }}">
+                                                    @endif
+                                                    {{ $Order['Order_ID'] }}
+                                                    </a>
+                                                </h6>
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                     <td>
+                                       <p>{{$Order['F_Name'] && $Order['L_Name'] ?  $Order['F_Name'] .' '. $Order['L_Name'] : "Not Assign"}}</p>
+                                        </td>
+                                    @if (
+                                        (int) $auth_user->Role_ID === 1 ||
+                                            (int) $auth_user->Role_ID === 9 ||
+                                            (int) $auth_user->Role_ID === 10 ||
+                                            (int) $auth_user->Role_ID === 11)
+                                        <td>{{ $Order['Client_Name'] }}</td>
+                                    @endif
+                                    @if ((int) in_array($auth_user->Role_ID , [8] ))
+                                        <td>{{ $Order['Order_Type'] == 2 ? 'Content Writing Order' : 'Reseacrh Writing Order' }}
+                                        </td>
+                                    @endif
+                                    
+                                    <td>{{ $Order['Word_Count'] ?? 'No word count' }}</td>
+                                    <td>
+                                        @if (isset($Order['DeadLine']))
+                                            {{ $Order['DeadLine'] }} <span class="text-danger">(Deadline)</span>
+                                        @elseif(isset($Order['F_DeadLine']))
+                                            {{ $Order['F_DeadLine'] }} <span class="text-danger">(First
+                                                Draft)</span>
+                                        @elseif(isset($Order['S_DeadLine']))
+                                            {{ $Order['S_DeadLine'] }} <span class="text-danger">(Second
+                                                Draft)</span>
+                                        @elseif(isset($Order['T_DeadLine']))
+                                            {{ $Order['T_DeadLine'] }} <span class="text-danger">(Third
+                                                Draft)</span>
+                                        @elseif(isset($Order['Four_DeadLine']))
+                                            {{ $Order['Four_DeadLine'] }} <span class="text-danger">(Fourth
+                                                Draft)</span>
+                                        @elseif(isset($Order['Fifth_DeadLine']))
+                                            {{ $Order['Fifth_DeadLine'] }} <span class="text-danger">(Fifth
+                                                Draft)</span>
+                                        @elseif(isset($Order['Sixth_DeadLine']))
+                                            {{ $Order['Sixth_DeadLine'] }} <span class="text-danger">(Sixth
+                                                Draft)</span>
+                                        @elseif(isset($Order['Seven_DeadLine']))
+                                            {{ $Order['Seven_DeadLine'] }} <span class="text-danger">(Seventh
+                                                Draft)</span>
+                                        @elseif(isset($Order['Eight_DeadLine']))
+                                            {{ $Order['Eight_DeadLine'] }} <span class="text-danger">(Eighth
+                                                Draft)</span>
+                                        @elseif(isset($Order['nine_DeadLine']))
+                                            {{ $Order['nine_DeadLine'] }} <span class="text-danger">(Ninth
+                                                Draft)</span>
+                                        @elseif(isset($Order['ten_DeadLine']))
+                                            {{ $Order['ten_DeadLine'] }} <span class="text-danger">(Tenth
+                                                Draft)</span>
+                                        @elseif(isset($Order['eleven_DeadLine']))
+                                            {{ $Order['eleven_DeadLine'] }} <span class="text-danger">(Eleventh
+                                                Draft)</span>
+                                        @elseif(isset($Order['twelve_DeadLine']))
+                                            {{ $Order['twelve_DeadLine'] }} <span class="text-danger">(Twelfth
+                                                Draft)</span>
+                                        @elseif(isset($Order['thirteen_DeadLine']))
+                                            {{ $Order['thirteen_DeadLine'] }} <span class="text-danger">(Thirteenth
+                                                Draft)</span>
+                                        @elseif(isset($Order['fourteen_DeadLine']))
+                                            {{ $Order['fourteen_DeadLine'] }} <span class="text-danger">(Fourteenth
+                                                Draft)</span>
+                                        @elseif(isset($Order['fifteen_DeadLine']))
+                                            {{ $Order['fifteen_DeadLine'] }} <span class="text-danger">(Fifteenth
+                                                Draft)</span>
+                                        @else
+                                            No Deadline
+                                        @endif
+                                    </td>
+                                    @if ($Order['Order_Status'] == 0)
+                                        <td>Working</td>
+                                    @elseif($Order['Order_Status'] == 1)
+                                        <td>Canceled</td>
+                                    @elseif($Order['Order_Status'] == 2)
+                                        <td>Completed</td>
+                                    @elseif($Order['Order_Status'] == 3)
+                                        <td>Revision</td>
+                                    @endif
+                                </tr>
+                                
+                            @empty
+                                <tr>
+                                    <td colspan="5">
+                                        <div class="d-flex justify-content-center">
+                                            <div class="me-3 mt-0 mt-sm-2 d-block">
+                                                <h6 class="mb-1 fs-16">Orders are Not Found!</h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
+                            
+                             <tr>
+                                    <td><b>Total Assign Words</b></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>{{ $order_words }}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                        </tbody>
+    
+                    </table>
+                
+                @else
                 <table class="table table-bordered text-nowrap border-bottom" id="responsive-datatable">
                     <thead>
                     <tr>
@@ -191,6 +575,7 @@
                     @endforelse
                     </tbody>
                 </table>
+                @endif
             </div>
         </div>
     </div>

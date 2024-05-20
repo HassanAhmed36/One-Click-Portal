@@ -6,6 +6,7 @@
     <div class="page-rightheader ms-md-auto">
         <div class="d-flex align-items-end flex-wrap my-auto end-content breadcrumb-end">
             <div class="btn-list d-flex">
+                
                 @if (empty($lastAttendanceID->check_in))
                     <form id="checkInForm" method="POST" action="{{ route('Mark.Check.In') }}">
                         @csrf
@@ -170,67 +171,77 @@
             </div>
         </div>
     @endif
-    <div class="col-sm-6 col-md-6 col-lg-3">
+    <div class="col-xl-3 col-lg-6 col-md-6">
         <div class="card">
             <div class="card-body">
-                <h2 class="mb-1 font-weight-bold">
-                    {{ $auth_user->leaves->Annual_Leaves - $Leave_Quota->Annual_Leaves . '/' . $auth_user->leaves->Annual_Leaves }}
-                </h2>
-                <div class="fs-6">Annual leave</div>
-                <!--<div class="">Remaining Auunal leave are {{ $Leave_Quota->Annual_Leaves }}</div>-->
-                <!--<div class="progress progress-sm mt-2">-->
-                <!--    <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary "-->
-                <!--        style="width: {{ PortalHelpers::getLeaveQuotaPercentage($auth_user->leaves->Annual_Leaves, $Leave_Quota->Annual_Leaves) }}%">-->
-                <!--    </div>-->
-                <!--</div>-->
+                <div class="row">
+                    <div class="col-8">
+                        <div class="mt-0 text-start"><span class="font-weight-semibold">Annual Leave</span>
+                            <h3 class="mb-0 mt-1 text-warning mb-2">
+                                {{ $auth_user->leaves->Annual_Leaves - $Leave_Quota->Annual_Leaves . '/' . $auth_user->leaves->Annual_Leaves }}
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="icon1 bg-warning my-auto float-end"><i class="las la-umbrella-beach"></i></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-sm-6 col-md-6 col-lg-3">
+    <div class="col-xl-3 col-lg-6 col-md-6">
         <div class="card">
             <div class="card-body">
-                <h2 class="mb-1 font-weight-bold">
-                    {{ $auth_user->leaves->Casual_Leaves - $Leave_Quota->Casual_Leaves . '/' . $auth_user->leaves->Casual_Leaves }}
-                </h2>
-                <div class="fs-6">Casual leave</div>
-                <!--<div class="">Remaining Casual leave are {{ $Leave_Quota->Casual_Leaves }}</div>-->
-                <!--<div class="progress progress-sm mt-2">-->
-                <!--    <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning "-->
-                <!--        style="width: {{ PortalHelpers::getLeaveQuotaPercentage($auth_user->leaves->Casual_Leaves, $Leave_Quota->Casual_Leaves) }}%">-->
-                <!--    </div>-->
-                <!--</div>-->
+                <div class="row">
+                    <div class="col-8">
+                        <div class="mt-0 text-start"><span class="font-weight-semibold">Casual Leave</span>
+                            <h3 class="mb-0 mt-1 text-info mb-2">
+                                {{ $auth_user->leaves->Casual_Leaves - $Leave_Quota->Casual_Leaves . '/' . $auth_user->leaves->Casual_Leaves }}
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="icon1 bg-info my-auto float-end"><i class="las la-umbrella"></i></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-sm-6 col-md-6 col-lg-3">
+    <div class="col-xl-3 col-lg-6 col-md-6">
         <div class="card">
             <div class="card-body">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="mt-0 text-start"><span class="font-weight-semibold">Sick Leave</span>
+                            <h3 class="mb-0 mt-1 text-secondary mb-2">
+                                {{ $auth_user->leaves->Sick_Leaves - $Leave_Quota->Sick_Leaves . '/' . $auth_user->leaves->Sick_Leaves }}
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="icon1 bg-secondary my-auto float-end"><i class="las la-notes-medical"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="mt-0 text-start"><span class="font-weight-semibold">Unpaid Leave</span>
+                            <h3 class="mb-0 mt-1 text-success mb-2">{{ $Leave_Quota->Un_Paid }}</h3>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="icon1 bg-success my-auto float-end"><i class="las la-money-bill-wave"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                <h2 class="mb-2 font-weight-bold">
-                    {{ $auth_user->leaves->Sick_Leaves - $Leave_Quota->Sick_Leaves . '/' . $auth_user->leaves->Sick_Leaves }}
-                </h2>
-                <div class="fs-6">Sick leave</div>
-                <!--<div class="progress progress-sm mt-2">-->
-                <!--    <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger "-->
-                <!--        style="width: {{ PortalHelpers::getLeaveQuotaPercentage($auth_user->leaves->Sick_Leaves, $Leave_Quota->Sick_Leaves) }}%">-->
-                <!--    </div>-->
-                <!--</div>-->
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6 col-md-6 col-lg-3">
-        <div class="card">
-            <div class="card-body">
-                <h2 class="mb-1 font-weight-bold">{{ $Leave_Quota->Un_Paid }}</h2>
-                <div class="fs-6">Unpaid leave</div>
-                <!--<div class="">Leave Without Pay</div>-->
-                <!--<div class="progress progress-sm mt-2">-->
-                <!--    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success "-->
-                <!--        style="width: 0%"></div>-->
-                <!--</div>-->
-            </div>
-        </div>
-    </div>
     <!-- End Row-->
     @if (in_array((int) $auth_user->Role_ID, [1, 9, 10, 11, 4, 17]))
         <div class="card overflow-hidden">
@@ -1309,20 +1320,7 @@
 
 
     @if ((int) $auth_user->Role_ID === 8 || (int) $auth_user->Role_ID === 12)
-        <div class="row">
-            <div class="col-xl-3 col-md-12 col-lg-12">
-                <div class="card" style="height: auto !important;">
-                    <div class="card-header border-0">
-                        <h4 class="card-title">Final DeadLines</h4>
-                    </div>
-                    <div class="list-group" id="Deadlines"
-                        style="overflow-y: scroll !important; max-height: 500px !important; ">
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
+       
         <div class="card overflow-hidden">
             <div class="card-header border-0">
                 <h4 class="card-title">Deadline Orders</h4>
@@ -1692,19 +1690,7 @@
 
 
     @if ((int) $auth_user->Role_ID === 16 || (int) $auth_user->Role_ID === 3)
-        <div class="row">
-            <div class="col-xl-3 col-md-12 col-lg-12">
-                <div class="card" style="height: auto !important;">
-                    <div class="card-header border-0">
-                        <h4 class="card-title">Final DeadLines</h4>
-                    </div>
-                    <div class="list-group" id="Deadlines"
-                        style="overflow-y: scroll !important; max-height: 500px !important; ">
-
-                    </div>
-                </div>
-            </div>
-        </div>
+        
 
         <div class="card overflow-hidden">
             <div class="card-header border-0">

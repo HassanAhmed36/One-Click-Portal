@@ -46,6 +46,10 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 
+
+use App\Models\Chats\ResearchOrderChat;
+use App\Models\Chats\ResearchOrderChatAttachment;
+
 class OrdersService
 {
     // ======================= Start Order Creation (Research & Content) ==========================
@@ -993,7 +997,7 @@ class OrdersService
      */
     private function OrderRevision(Request $request, $orderBasicInfo): RedirectResponse
     {
-        $additionalWords = (float)Str::replace(['$ ', ','], "", $orderBasicInfo->Word_Count) + (float)$request->Order_Words;
+        $additionalWords = (float) $orderBasicInfo->Word_Count + (float)$request->Order_Words;
         $orderBasicInfo->update([
             'Word_Count' => $additionalWords,
             'Order_Status' => 3,
@@ -1738,4 +1742,28 @@ class OrdersService
             return back()->with('Error!', 'File Not Submited Sucessfuyy');
         }
     }
+    
+     public function DeleteAttachment($id){
+         $document_id = Crypt::decryptString($id);
+         OrderAttachment::where('id' , $document_id)->delete();
+         return back()->with('Success!' , 'Attachment Deleted Successfully!');
+        
+    }
+    
+     public function DeleteChat($id){
+        
+         $chat_id = Crypt::decryptString($id);
+         ResearchOrderChat::where('id' , $chat_id)->delete();
+         return back()->with('Success!' , 'Chat Deleted Successfully!');
+        
+    }
+    
+    public function DeleteChatAttachment($id){
+        
+         $chat_id = Crypt::decryptString($id);
+         ResearchOrderChatAttachment::where('id' , $chat_id)->delete();
+         return back()->with('Success!' , 'Chat Deleted Successfully!');
+        
+    }
+    
 }

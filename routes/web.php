@@ -95,6 +95,8 @@ use App\Http\Livewire\Payroll\DetactionSetting;
 use App\Http\Livewire\Payroll\Payslip;
 use App\Http\Livewire\PreVillages\PreferredLanguage;
 
+use App\Http\Livewire\Policy;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -218,7 +220,14 @@ Route::prefix('Authentication')->group(function () {
 
 Route::group(['middleware' => ['Authorized', 'Encrypted_Route'], 'prefix' => 'Authorized'], static function () {
     Route::get('/', Dashboard::class,)->name('Main.Dashboard');
-
+    
+    Route::get('/Delete-Attachment/{id}' , [OrdersService::class, 'DeleteAttachment'])->name('delete.attachment');
+    
+    Route::get('/Delete-Chat/{id}' ,  [OrdersService::class, 'DeleteChat'])->name('delete.chat');
+    Route::get('/Delete-Chat-Attachment/{id}' ,  [OrdersService::class, 'DeleteChatAttachment'])->name('delete.chat.attachment');
+    
+    
+    
     Route::get('/Client-Orders-List', ClientsList::class,)->name('Clients.List')->middleware('Check_Role');
     Route::get('/Get-Client-Orders-List', [ClientsList::class, 'getAllClientsList'])->name('Get.All.Clients.List');
     Route::post('/Update-Client-Orders-info', [ClientsList::class, 'updateClientInfo'])->name('Update.Client.Info')->middleware('Check_Role');
@@ -368,7 +377,7 @@ Route::group(['middleware' => ['Authorized', 'Encrypted_Route'], 'prefix' => 'Pr
     Route::post('/Post-Generic', [AllGenericType::class, 'postGeneric'])->name('Post.Generic')->middleware('Check_Permissions:Services_view');
     Route::get('/Delete-Generic/{Generic_ID}', [AllGenericType::class, 'deleteGeneric'])->name('Delete.Generic')->middleware('Check_Permissions:Services_view');
 
-    Route::get('/Add-Portal-Permissions', AddPermissions::class,)->name('Add.Portal.Permissions')->middleware('Check_Role');
+    Route::get('/Add-Portal-Permissions', AddPermissions::class,)->name('Add.Portal.Permissions');
     Route::post('/Post-Portal-Permissions', [CreateUpdatePortalPermissions::class, 'submitPortalPermissions'])->name('Post.Portal.Permissions')->middleware('Check_Role');
 
     Route::get('/Preferred-Language', PreferredLanguage::class)->name('preferred.language');
@@ -388,7 +397,7 @@ Route::group(['middleware' => ['Authorized', 'Encrypted_Route'], 'prefix' => 'At
 
 
 Route::group(['prefix' => 'Notice'], function () {
-    Route::get('/View-All/{interval}', NoticeBoards::class)->name('Get.Notices');
+    Route::get('/View-All', NoticeBoards::class)->name('Get.Notices');
     Route::post('/Submit-Notice', [NoticeBoards::class, 'postNotice'])->name('Post.Notice');
     Route::get('/Delete/{Notice_ID}', [NoticeBoards::class, 'deleteNotice'])->name('Delete.Notice');
     Route::get('/Notice-Detail', [NoticeBoards::class, 'noticeDetail'])->name('Detail.Notice');
@@ -399,6 +408,8 @@ Route::group(['prefix' => 'Notice'], function () {
     Route::post('/Submit-Survey-Answers', [NoticeBoards::class, 'submitSurveyAnswers'])->name('submit.survey.answers');
     Route::get('/View-Notice-Board-Answers/{Notice_ID}', ViewNoticeAnswers::class)->name('view.notice.boards.answers');
     Route::get('/View-Answer-Users', [ViewNoticeAnswers::class, 'ViewAnswerUsers'])->name('view.answer.user');
+        Route::get('/Check-Session-Status', [NoticeBoards::class,'checkSessionStatus'])->name('check.session.status');
+        Route::get('/Destroy-Session-Status', [NoticeBoards::class,'destroySessionStatus'])->name('reset.session.interval');
 });
 
 // Route::group(['middleware' => ['Authorized', 'Encrypted_Route'], 'prefix' => 'Leave-Entitlement'], static function () {
@@ -416,6 +427,11 @@ Route::group(['prefix' => 'Notice'], function () {
 
 //     Route::get('/User-Quota', UserLeaveQuotaView::class)->name('User.Leave.Quota');
 // });
+
+
+Route::get('/company-policy' , Policy::class)->name('company.policy');
+Route::post('/update-company-policy' , [Policy::class , 'updateCompanyPolicy'])->name('update.company.policy');
+
 
 
 Route::group(['middleware' => ['Authorized', 'Encrypted_Route'], 'prefix' => 'Leave-Entitlement'], static function () {

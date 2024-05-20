@@ -45,7 +45,7 @@
     <style>
         @media screen and (min-width: 768px) {
             body {
-                zoom: 85% !important; 
+                zoom: 95% !important; 
             }
         }
 
@@ -60,7 +60,7 @@
     </style>
 </head>
 
-<body class="">
+<body class="" >
 
 
 {{ $slot }}

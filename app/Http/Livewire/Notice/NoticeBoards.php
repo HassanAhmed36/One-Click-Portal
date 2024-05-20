@@ -24,20 +24,11 @@ use Carbon\Carbon;
 
 
 class NoticeBoards extends Component
-{   
-    public $interval;
-
-    public function mount($interval)
-    {
-        $this->interval = $interval;
-    }
-
+{
     public function render()
     {
-        $interval = $this->interval;
-        // dd($interval); 
         $notices = Notice::with(['images', 'createdBy.basic_info', 'questions.options'])->get();
-        return view('livewire.notice.notice-boards', compact('notices','interval'))->layout('layouts.authorized');
+        return view('livewire.notice.notice-boards', compact('notices'))->layout('layouts.authorized');
     }
 
     public function postNotice(Request $request)
@@ -131,9 +122,27 @@ class NoticeBoards extends Component
             }
         }
 
-        return redirect()->route('Get.Notices', ['interval' => "true"])->with('success', 'Notice has been added successfully.');
+        session(['interval' => 'true']);
+
+        return redirect()->route('Get.Notices')->with('success', 'Notice has been added successfully.');
     }
 
+
+    public function checkSessionStatus(Request $request)
+    {
+        $sessionStatus = session('interval', 'false');
+      
+
+        return response()->json([
+            'sessionStatus' => $sessionStatus,
+        ]);
+    }
+    
+    public function destroySessionStatus()
+{
+    session()->forget('interval');
+    return response()->json(['message' => 'Session interval reset successfully.']);
+}
     public function submitSurveyAnswers(Request $request)
     {
         $authUser = Auth::guard('Authorized')->user();
@@ -260,6 +269,7 @@ class NoticeBoards extends Component
             ->where('end_datetime', '>=', $currentDatetime)
             ->first();
 
+
         if ($noticeDetail) {
             $noticeDetailView = view('livewire.notice.notice-detail', compact('noticeDetail', 'submitbtn'))->render();
             return response()->json(['success' => true, 'noticeDetail' => $noticeDetailView, 'time_limit' => $noticeDetail->time_limit],);
@@ -267,6 +277,4 @@ class NoticeBoards extends Component
             return response()->json(['success' => false, 'message' => 'No active notices found']);
         }
     }
-
-   
 }
